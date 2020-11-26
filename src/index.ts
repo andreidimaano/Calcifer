@@ -1,4 +1,5 @@
-import { Client, Message} from 'discord.js'
+import { Client } from 'discord.js'
+import { onMessage } from './eventHandlers'
 require('dotenv').config();
 
 
@@ -12,7 +13,7 @@ client.on('ready', () =>{
     console.log(`Logged in as ${client.user?.tag}!`);
 })
 
-client.on('message', message => {
+client.on('message', async (message) => {
     if(message.author.bot) return;
 
     if(message.content === 'ping'){
@@ -22,4 +23,6 @@ client.on('message', message => {
     if(message.content === 'pee'){
         message.reply('Poop')
     }
+
+    await onMessage(message, client.user!);
 })

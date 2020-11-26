@@ -51,16 +51,16 @@ let parseArguments = (messageContent: string) : Arguments => {
     
     let time = (args.length >= 2) ? parseInt(args[1]) : undefined;
 
-    console.log(`args: ${args}`);
+    //console.log(`args: ${args}`);
     return {
-        command: args[0],
+        command: args[0].toLowerCase(),
         time: time
     };
 };
 
 let executeCommand = async (message: Message, clientUser: User, args: Arguments) => {
 
-    console.log(args);
+    //console.log(args);
     //(1) no discord guild exists
     if(!message.guild) return;
     //(2) pomodoro Command

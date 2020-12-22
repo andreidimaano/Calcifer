@@ -12,7 +12,7 @@ export let helpEmbed = new MessageEmbed()
         { name: '\u200B', value: '\u200B' },
         { name: 'c: pomodoro', value: 'start 25 minute pomodoro timer'},
         { name: '\u200B', value: '\u200B' },
-        { name: 'c: pomodoro [number]', value: 'start [number from 10 to 50] minute pomodoro timer'},
+        { name: 'c: pomodoro [number]', value: 'start [number from 10 to 120] minute pomodoro timer'},
         { name: '\u200B', value: '\u200B' },
         { name: 'c: cook', value: 'for the memes'},
         { name: '\u200B', value: '\u200B' },

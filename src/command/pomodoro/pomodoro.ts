@@ -3,7 +3,7 @@ import { endEmbed, startEmbed } from "./PomodoroEmbed";
 import { currentlyStudying, currentMembersStudying, removeMember } from "./PomodoroMembers";
 
 export let Pomodoro = async ( message: Message, time?: number) => {
-    let timer = (time && time <= 50 && time >= 10) ? time : 25
+    let timer = (time && time <= 120 && time >= 10) ? time : 25
     
     //check if currentlyStudying
     if(currentlyStudying(message.author.tag)) {
@@ -14,7 +14,7 @@ export let Pomodoro = async ( message: Message, time?: number) => {
     //(1) update currentMembersStudying
     currentMembersStudying.push(message.author.tag);
     //(2) send confirmation timer
-    let errorMessage = (time && (time > 50 || time < 10)) ? 'timer specified is not within time limits, timer set to 25\n' : '';     
+    let errorMessage = (time && (time > 120 || time < 10)) ? 'timer specified is not within time limits, timer set to 25\n' : '';     
     await message.reply(errorMessage, startEmbed(timer));
 
     setTimeout(async () => {

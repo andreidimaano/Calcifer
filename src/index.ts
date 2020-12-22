@@ -5,7 +5,8 @@ require('dotenv').config();
 const client = new Client();
 
 //login
-client.login(process.env.DISCORDTOKEN);
+client.login(process.env.TESTTOKEN);
+//client.login(process.env.DISCORDTOKEN);
 
 client.on('ready', async () => {
     await client.user?.setActivity({

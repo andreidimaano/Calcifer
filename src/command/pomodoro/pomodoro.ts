@@ -38,10 +38,8 @@ let currentMembersStudying: string[] = [];
 export let Pomodoro = async ( message: Message, time?: number) => {
     let timer = (time && time <= 50 && time >= 10) ? time : 25
     
-    //console.log(timer);
     //check if currentlyStudying
     if(currentlyStudying(message.author.tag)) {
-        //console.log(currentMembersStudying);
         return await message.reply('You\'re already studying!');
     }
     
@@ -55,8 +53,7 @@ export let Pomodoro = async ( message: Message, time?: number) => {
     setTimeout(async () => {
         await message.channel.send(message.author, endEmbed);
         removeMember(currentMembersStudying, message.author.tag);
-        //console.log(currentMembersStudying);
-    }, 60000 * timer);
+    }, /*60000*/ 10 * timer);
 }
 
 

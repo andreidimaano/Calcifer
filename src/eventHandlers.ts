@@ -32,9 +32,16 @@ let parseArguments = (messageContent: string) : Arguments => {
     let content = messageContent.slice(3);
     let args = content.split(' ').map((argument) => argument.trim());
     
-    let time = (args.length >= 2) ? parseInt(args[1]) : undefined;
-
-    //console.log(`args: ${args}`);
+    let time = undefined;
+    if(args.length >= 2) {
+        if(typeof args[1] === "string" && isNaN(args[1] as any)){
+            if(args[1] == 'pom'){
+                time = 50;
+            }
+        } else {
+            time = parseInt(args[1]);
+        }
+    }
     return {
         command: args[0].toLowerCase(),
         time: time
@@ -47,9 +54,20 @@ let executeCommand = async (message: Message, clientUser: User, args: Arguments)
     //(1) no discord guild exists
     if(!message.guild) return;
 
-    //(2) pomodoro Command
-    if(args.command == "pomodoro") {
-        await Pomodoro(message, args.time);
+    switch(args.command) {
+        case 'pomodoro': {
+            await Pomodoro(message, args.time);
+            break;
+        }
+        case 'pom' : {
+            console.log(args);
+            if(!args.time){
+                await Pomodoro(message, 25);
+            } else {
+                await Pomodoro(message, args.time);
+            }
+            break; 
+        }
     }
 
     //(3) cook Command for the memes

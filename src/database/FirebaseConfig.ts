@@ -11,5 +11,4 @@ const firebaseConfig = {
     appId: process.env.FIREBASE_APPID,
 };
 
-export let firebaseApp = firebase.initializeApp(firebaseConfig);
-export let userDatabase = firebase.storage;
+export let firebaseApp = () => firebase.initializeApp(firebaseConfig);

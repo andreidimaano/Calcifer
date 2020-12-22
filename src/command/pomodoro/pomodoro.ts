@@ -1,6 +1,12 @@
 import { Message } from "discord.js";
+import firebase from "firebase";
+import { firebaseApp } from "../../database/FirebaseConfig";
+import { addUser, updateDatabase } from "../../database/FirebaseCRUD";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
 import { currentlyStudying, currentMembersStudying, removeMember } from "./PomodoroMembers";
+
+firebaseApp();
+let userDatabase = firebase.firestore();
 
 export let Pomodoro = async ( message: Message, time?: number) => {
     let timer = (time && time <= 120 && time >= 10) ? time : 25
@@ -20,8 +26,14 @@ export let Pomodoro = async ( message: Message, time?: number) => {
     setTimeout(async () => {
         await message.channel.send(message.author, endEmbed);
         removeMember(currentMembersStudying, message.author.tag);
+        
+        let userDB = await userDatabase.collection('Guild').doc(message.author.tag).get();
+        console.log(userDB);
+        (userDB) ? await updateDatabase(userDatabase, message.author.tag, userDB, timer) : await addUser(userDatabase, message.author.tag, timer);
     }, /*60000*/ 1000 * timer);
+    
 }
+
 
 
 

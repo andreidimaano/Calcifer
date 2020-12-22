@@ -15,7 +15,7 @@ export let Pomodoro = async ( message: Message, time?: number) => {
     currentMembersStudying.push(message.author.tag);
     //(2) send confirmation timer
     let errorMessage = (time && (time > 50 || time < 10)) ? 'timer specified is not within time limits, timer set to 25\n' : '';     
-    await message.reply(errorMessage ,startEmbed(timer));
+    await message.reply(errorMessage, startEmbed(timer));
 
     setTimeout(async () => {
         await message.channel.send(message.author, endEmbed);

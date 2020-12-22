@@ -19,5 +19,5 @@ client.on('ready', async () => {
 client.on('message', async (message) => {
     if(message.author.bot) return;
 
-    await onMessage(message, client.user!);
+    await onMessage(message);
 })

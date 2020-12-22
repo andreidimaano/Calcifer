@@ -1,6 +1,8 @@
 import {Message, User, Guild, MessageEmbed } from 'discord.js'
-import { helpEmbed } from './command/help/help';
-import { Pomodoro } from './command/pomodoro/pomodoro'
+import { Cook } from './command/cook/Cook';
+import { Default } from './command/default/Default';
+import { helpEmbed } from './command/help/Help';
+import { Pomodoro } from './command/pomodoro/Pomodoro'
 
 interface Arguments {
     command: string;
@@ -8,15 +10,13 @@ interface Arguments {
     //add other arguments later
 }
 
-export const onMessage = async (
-    message: Message, 
-    clientUser: User
-) : Promise<void> => {
+export const onMessage = async (message: Message ) : Promise<void> => {
     if (!message.guild) return;
     if(!canHandleMessage(message)) return;
     let args = parseArguments(message.content);
+
     try {
-        await executeCommand(message, clientUser, args);
+        await executeCommand(message, args);
     } catch (error) {
         await message.channel.send(error.message);
     }
@@ -48,9 +48,7 @@ let parseArguments = (messageContent: string) : Arguments => {
     };
 };
 
-let executeCommand = async (message: Message, clientUser: User, args: Arguments) => {
-
-    //console.log(args);
+let executeCommand = async (message: Message, args: Arguments) => {
     //(1) no discord guild exists
     if(!message.guild) return;
 
@@ -61,24 +59,24 @@ let executeCommand = async (message: Message, clientUser: User, args: Arguments)
         }
         case 'pom' : {
             console.log(args);
-            if(!args.time){
-                await Pomodoro(message, 25);
-            } else {
-                await Pomodoro(message, args.time);
-            }
+            (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
             break; 
         }
-    }
-
-    //(3) cook Command for the memes
-    if(args.command == "cook") {
-        await message.reply('I don\'t cook! I\'m a scary and powerful fire demon!')
-    }
-    
-    //(4) help Command
-    if(args.command == "help"){
-        await message.react('😡');
-        await message.channel.send(`${message.author} Fine, like moving the castle isn\'t hard enough!`, helpEmbed);
+        case 'cook' : {
+            await Cook(message);
+            break;
+        }
+        case 'help' : {
+            await message.react('😡');
+            await message.channel.send(
+                `${message.author} Fine, like moving the castle isn\'t hard enough!`, 
+                helpEmbed
+            );
+            break;
+        }
+        default : {
+            await Default(message);
+        }
     }
     
 }

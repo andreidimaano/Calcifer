@@ -13,27 +13,22 @@ export let Pomodoro = async ( message: Message, time?: number) => {
     let timer = (time && time <= 120 && time >= 10) ? time : 25
     let author = message.author.tag;
     
-    //check if currentlyStudying
     if(currentlyWorking(author)) {
         return await message.reply('You\'re already working!');
     }
     
-    //if not currentlyStudying start Pomodoro
-    //(1) update currentMembersStudying
     currentMembersWorking.push(author);
-    //(2) send confirmation timer
     let errorMessage = (time && (time > 120 || time < 10)) ? 'timer specified is not within time limits, timer set to 25\n' : '';     
     await message.reply(errorMessage, startEmbed(timer));
 
     setTimeout(async () => {
-        if(isCanceledPomodoro(author))
-
-        await message.channel.send(message.author, endEmbed);
-        removeMember(currentMembersWorking, author);
-        
-        //update database
-        updateDatabase(author, timer);
-        
+        if(!isCanceledPomodoro(author)) {
+            await message.channel.send(message.author, endEmbed);
+            removeMember(currentMembersWorking, author);
+            updateDatabase(author, timer);
+        } else {
+            removeMember(canceledPomodoroMembers, author);
+        }
     }, /*60000*/ 1000 * timer);   
 }
 

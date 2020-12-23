@@ -6,7 +6,7 @@ export let startEmbed = (time: number) => {
     .setTitle('Pomodoro')
     .setTimestamp()
     .addFields(
-        { name: `:tomato: Your timer is set to ${time} minutes :tomato:`, value: ':blush: Happy Studying! :blush:'},
+        { name: `:tomato: Your timer is set to ${time} minutes :tomato:`, value: ':blush: Happy Working! :blush:'},
     )
 }
 

@@ -1,11 +1,12 @@
 import {Message, User, Guild, MessageEmbed } from 'discord.js'
+import { CancelPomodoro } from './command/cancel/CancelPomodoro';
 import { Cook } from './command/cook/Cook';
 import { Default } from './command/default/Default';
 import { helpEmbed } from './command/help/Help';
 import { Pomodoro } from './command/pomodoro/Pomodoro'
 
 interface Arguments {
-    command: string;
+    command: string | undefined;
     time?: number;
     //add other arguments later
 }
@@ -23,44 +24,18 @@ export const onMessage = async (message: Message ) : Promise<void> => {
 
 }
 
-let canHandleMessage = (message: Message) : boolean => {
-    return (!message.author.bot && message.content.startsWith('c: '));
-}
-
-let parseArguments = (messageContent: string) : Arguments => {
-    //remove command prefix
-    let content = messageContent.slice(3);
-    let args = content.split(' ').map((argument) => argument.trim());
-    
-    let time = undefined;
-    if(args.length >= 2) {
-        if(typeof args[1] === "string" && isNaN(args[1] as any)){
-            if(args[1] == 'pom'){
-                time = 50;
-            }
-        } else {
-            time = parseInt(args[1]);
-        }
-    }
-    return {
-        command: args[0].toLowerCase(),
-        time: time
-    };
-};
-
 let executeCommand = async (message: Message, args: Arguments) => {
     //(1) no discord guild exists
     if(!message.guild) return;
 
     switch(args.command) {
-        case 'pomodoro': {
-            await Pomodoro(message, args.time);
+        case ('pomodoro' || 'pom'): {
+            (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
             break;
         }
-        case 'pom' : {
-            console.log(args);
-            (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
-            break; 
+        case ('cancel'): {
+            await CancelPomodoro(message);
+            break;
         }
         case 'cook' : {
             await Cook(message);
@@ -80,3 +55,35 @@ let executeCommand = async (message: Message, args: Arguments) => {
     }
     
 }
+
+let canHandleMessage = (message: Message) : boolean => {
+    return (!message.author.bot && message.content.startsWith('c: '));
+}
+
+let parseArguments = (messageContent: string) : Arguments => {
+    //remove command prefix
+    let content = messageContent.slice(3);
+    let args = content.split(' ').map((argument) => argument.trim());
+    let time = undefined;
+    let command = undefined;
+
+    if(args.length <= 2){
+        command = args[0].toLowerCase();
+        if(args.length > 1) {
+            //case for pom pom macro
+            if(typeof args[1] === "string" && isNaN(args[1] as any)){
+                if(args[1] == 'pom'){
+                    time = 50;
+                }
+            //case for pomodoro [time]
+            } else {
+                time = parseInt(args[1]);
+            }
+        }
+    }
+    return {
+        command: command,
+        time: time
+    };
+};
+

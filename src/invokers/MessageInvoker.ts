@@ -13,6 +13,7 @@ interface Arguments {
 
 export const onMessage = async (message: Message ) : Promise<void> => {
     if (!message.guild) return;
+    if (message.author.bot) return;
     if(!canHandleMessage(message)) return;
     let args = parseArguments(message.content);
 
@@ -29,14 +30,13 @@ let executeCommand = async (message: Message, args: Arguments) => {
     if(!message.guild) return;
 
     console.log(args);
-
     switch(args.command) {
         case ('pom'): {
             (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
             break;
         }
         case ('pomodoro'): {
-            await Pomodoro(message, 25);
+            (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
             break;
         }
         case ('cancel'): {

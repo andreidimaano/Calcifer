@@ -1,8 +1,7 @@
 import { Client } from 'discord.js'
 import firebase from 'firebase';
-import { initializeFirebase } from './database/FirebaseConfig';
-import { addGuild } from './database/FirebaseCRUD';
-import { onMessage } from './invoker/MessagInvoker';
+import { addGuild, isValidGuildQuery } from './database/FirebaseCRUD';
+import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
 
 const client = new Client();
@@ -29,6 +28,12 @@ client.on('ready', async () => {
 
 client.on('message', async (message) => {
     if(message.author.bot) return;
+
+    //for servers where the bot is already in
+    let guildExists = await isValidGuildQuery(guildDatabase, message.guild!.id);
+    if (!guildExists) {
+        await addGuild(guildDatabase, message.guild!);
+    }
 
     await onMessage(message);
 })

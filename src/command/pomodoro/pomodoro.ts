@@ -12,6 +12,7 @@ let userDatabase = firebase.firestore();
 export let Pomodoro = async ( message: Message, time?: number) => {
     let timer = (time && time <= 120 && time >= 10) ? time : 25
     let author = message.author.tag;
+    let guildId = message.guild!.id;
     
     if(currentlyWorking(author)) {
         return await message.reply('You\'re already working!');
@@ -25,17 +26,17 @@ export let Pomodoro = async ( message: Message, time?: number) => {
         if(!isCanceledPomodoro(author)) {
             await message.channel.send(message.author, endEmbed);
             removeMember(currentMembersWorking, author);
-            updateDatabase(author, timer);
+            updateDatabase(author, guildId, timer);
         } else {
             removeMember(canceledPomodoroMembers, author);
         }
-    }, /*60000*/ 1000 * timer);   
+    }, /*60000*/ 200 * timer);   
 }
 
-let updateDatabase = async (author: string, timer: Number) => {
+let updateDatabase = async (author: string, guildId: string, timer: Number) => {
     //if user exists in DB, execute Update operation; execute Add operation otherwise.
-    let userDB = await userDatabase.collection('Guild').doc(author).get();
-    (userDB) ? await updateUserTotalTime(userDatabase, author, userDB, timer) : await addUser(userDatabase, author, timer);
+    let user = await userDatabase.collection('Guilds').doc(guildId).collection('Users').doc(author).get();
+    (user.exists) ? await updateUserTotalTime(userDatabase, guildId, author, user, timer) : await addUser(userDatabase, guildId, author, timer);
 }
 
 

@@ -6,13 +6,12 @@ import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
 
 const client = new Client();
-let guildDatabase: any;
-if (firebase.apps.length === 0) {
-    initializeFirebase();
-}
-guildDatabase = firebase.firestore();
+// let guildDatabase: any;
+// if (firebase.apps.length === 0) {
+//     initializeFirebase();
+// }
+// guildDatabase = firebase.firestore();
 
-client.destroy();
 client.login(process.env.DISCORDTOKEN);
 
 client.on('ready', async () => {
@@ -27,16 +26,16 @@ client.on('message', async (message) => {
     if(message.author.bot) return;
 
     //for servers where the bot is already in
-    let guildExists = await isValidGuildQuery(guildDatabase, message.guild!.id);
-    if (!guildExists) {
-        await addGuild(guildDatabase, message.guild!);
-    }
+    // let guildExists = await isValidGuildQuery(guildDatabase, message.guild!.id);
+    // if (!guildExists) {
+    //     await addGuild(guildDatabase, message.guild!);
+    // }
 
     await onMessage(message);
 })
 
 client.on('guildCreate', async (guildData) => {
-    addGuild(guildDatabase, guildData);
+    //addGuild(guildDatabase, guildData);
 })
 
 

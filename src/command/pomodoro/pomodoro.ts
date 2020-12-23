@@ -26,7 +26,7 @@ export let Pomodoro = async ( message: Message, time?: number) => {
         if(!isCanceledPomodoro(author)) {
             await message.channel.send(message.author, endEmbed);
             removeMember(currentMembersWorking, author);
-            updateDatabase(author, guildId, timer);
+            //updateDatabase(author, guildId, timer);
         } else {
             removeMember(canceledPomodoroMembers, author);
         }

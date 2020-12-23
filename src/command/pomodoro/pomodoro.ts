@@ -30,7 +30,7 @@ export let Pomodoro = async ( message: Message, time?: number) => {
         } else {
             removeMember(canceledPomodoroMembers, author);
         }
-    }, /*60000*/ 200 * timer);   
+    }, 60000 * timer);   
 }
 
 let updateDatabase = async (author: string, guildId: string, timer: Number) => {

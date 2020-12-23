@@ -10,6 +10,5 @@ export let removeMember = (array: string[], author_tag: string) :string[] => {
 };
 
 export let currentlyWorking = (author_tag: string) :boolean => {
-    console.log(currentMembersWorking);
     return (currentMembersWorking.find(member_tag => member_tag === author_tag)) ? true : false;
 };

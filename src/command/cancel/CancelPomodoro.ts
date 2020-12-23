@@ -10,7 +10,6 @@ export let CancelPomodoro = async (message: Message) : Promise<void> => {
         return;
     } else {
         removeMember(currentMembersWorking, message.author.tag);   
-        console.log('canceled: ',currentMembersWorking);
         canceledPomodoroMembers.push(message.author.tag);
     }
 

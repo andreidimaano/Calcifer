@@ -29,7 +29,6 @@ export let getUserTime = async (database: firebase.firestore.Firestore, guildId:
 
 //Update
 export let updateUserTotalTime = async (database: firebase.firestore.Firestore, guildId: string, authorTag: string, userDB: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>, time: Number) => {
-    console.log('update is called');
     try {
         let minutesStudied = userDB.data()!.minutesStudied;
         await database.collection('Guilds').doc(guildId).collection('Users').doc(authorTag).update({
@@ -47,7 +46,6 @@ export let updateUserTotalTime = async (database: firebase.firestore.Firestore, 
 //Create
 export let addGuild = async (database: firebase.firestore.Firestore, guildData: Guild) => {
     try {
-        console.log('add guild called')
         await database.collection('Guilds').doc(guildData.id).set({
             'guildName': guildData.toString(),
             'guildOwner': guildData.ownerID,
@@ -61,8 +59,6 @@ export let addGuild = async (database: firebase.firestore.Firestore, guildData: 
 
 //Read
 export let isValidGuildQuery = async (database: firebase.firestore.Firestore, guildId: string): Promise<Boolean> => {
-    console.log('fuunction called');
     let guild = await database.collection('Guilds').doc(guildId).get();
-    console.log(guild.exists);
     return (guild.exists);
 }

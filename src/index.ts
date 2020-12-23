@@ -6,16 +6,12 @@ require('dotenv').config();
 
 const client = new Client();
 let guildDatabase: any;
-
-let main = async () => {
-    client.login(process.env.DISCORDTOKEN);
-    if (firebase.apps.length === 0) {
-        firebase.initializeApp({});
-    }
-    guildDatabase = firebase.firestore();
+if (firebase.apps.length === 0) {
+    firebase.initializeApp({});
 }
+guildDatabase = firebase.firestore();
 
-main();
+client.login(process.env.DISCORDTOKEN);
 
 client.on('ready', async () => {
     await client.user?.setActivity({

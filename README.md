@@ -1,6 +1,16 @@
 # Calcifer
 Calcifer is a Discord Study Bot that allows users to start Pomodoro Timers. 
 
+All Commands:<br />
+`c: pomodoro`<br />
+`c: pomodoro [time]`<br />
+`c: pom`<br />
+`c: pom pom`<br />
+`c: cancel`<br />
+`c: help`<br />
+`c: productivity`<br />
+`c: cook `<br />
+
 ## Current Features
 
 ### Pomodoro
@@ -10,7 +20,7 @@ Start a Pomodoro Timer
 `c: pomodoro [time]` start a [time] minute timer || time must be within 10 - 120<br />
 `c: pom` start a 25 minute timer (new macro)<br />
 `c: pom pom` (new macro)<br />
-
+`c: cancel` cancel your timer || you will not be attributed any minutes<br />
  
 ### Productivity
 I've added a database using Google Firestore! I won't be collecting any malicious data, only data that stores how much a user studies. 

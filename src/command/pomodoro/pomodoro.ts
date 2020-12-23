@@ -1,12 +1,12 @@
 import { Message } from "discord.js";
 import firebase from "firebase";
-import { firebaseApp } from "../../database/FirebaseConfig";
+import { initializeFirebase } from "../../database/FirebaseConfig";
 import { addUser, updateUserTotalTime } from "../../database/FirebaseCRUD";
 import { canceledPomodoroMembers, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
 import { currentlyWorking, currentMembersWorking, removeMember} from "./PomodoroMembers";
 
-firebaseApp();
+initializeFirebase();
 let userDatabase = firebase.firestore();
 
 export let Pomodoro = async ( message: Message, time?: number) => {

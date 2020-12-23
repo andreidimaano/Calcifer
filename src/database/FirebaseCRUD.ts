@@ -1,9 +1,10 @@
+import { Guild, Snowflake } from "discord.js";
 import firebase from "firebase";
 
-export let updateUserTotalTime = async (userDatabase: firebase.firestore.Firestore, authorTag: string, userDB: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>, time: Number) => {
+export let updateUserTotalTime = async (database: firebase.firestore.Firestore, authorTag: string, userDB: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>, time: Number) => {
     try {
         let minutesStudied = userDB.data()!.minutesStudied;
-        await userDatabase.collection('Guild').doc(authorTag).update({
+        await database.collection('Guild').doc(authorTag).update({
             'minutesStudied': (minutesStudied + time)
         })
     } catch(error) {
@@ -11,11 +12,23 @@ export let updateUserTotalTime = async (userDatabase: firebase.firestore.Firesto
     }
 }
 
-export let addUser = async (userDatabase: firebase.firestore.Firestore, user: string, time: Number) => {
+export let addUser = async (database: firebase.firestore.Firestore, user: string, time: Number) => {
     try {
-        await userDatabase.collection('Guild').doc(user).set({
+        await database.collection('Guild').doc(user).set({
             'minutesStudied': time
         })
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+export let addGuild = async (database: firebase.firestore.Firestore, guildData: Guild) => {
+    try {
+        await database.collection('Guilds').doc(guildData.id).set({
+            'guildName': guildData.toString(),
+            'guildOwner': guildData.ownerID,
+            'guildMemberCount': guildData.memberCount,
+        });
     } catch(error) {
         console.log(error);
     }

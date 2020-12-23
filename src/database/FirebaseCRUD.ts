@@ -1,6 +1,6 @@
 import firebase from "firebase";
 
-export let updateDatabase = async (userDatabase: firebase.firestore.Firestore, authorTag: string, userDB: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>, time: Number) => {
+export let updateUserTotalTime = async (userDatabase: firebase.firestore.Firestore, authorTag: string, userDB: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>, time: Number) => {
     try {
         let minutesStudied = userDB.data()!.minutesStudied;
         await userDatabase.collection('Guild').doc(authorTag).update({

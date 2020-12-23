@@ -1,6 +1,6 @@
 export let currentMembersWorking: string[] = [];
 
-export let removeMemberWorking = (array: string[], author_tag: string) :string[] => {
+export let removeMember = (array: string[], author_tag: string) :string[] => {
     let index = array.indexOf(author_tag);
     if(index > -1) {
         return array.splice(index, 1);

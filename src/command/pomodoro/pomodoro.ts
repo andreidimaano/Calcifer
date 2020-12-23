@@ -1,9 +1,9 @@
 import { Message } from "discord.js";
 import firebase from "firebase";
 import { firebaseApp } from "../../database/FirebaseConfig";
-import { addUser, updateDatabase } from "../../database/FirebaseCRUD";
+import { addUser, updateUserTotalTime } from "../../database/FirebaseCRUD";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
-import { currentlyWorking, currentMembersWorking, removeMemberWorking } from "./PomodoroMembers";
+import { currentlyWorking, currentMembersWorking, removeMember} from "./PomodoroMembers";
 
 firebaseApp();
 let userDatabase = firebase.firestore();
@@ -25,13 +25,18 @@ export let Pomodoro = async ( message: Message, time?: number) => {
 
     setTimeout(async () => {
         await message.channel.send(message.author, endEmbed);
-        removeMemberWorking(currentMembersWorking, message.author.tag);
+        removeMember(currentMembersWorking, message.author.tag);
         
-        let userDB = await userDatabase.collection('Guild').doc(message.author.tag).get();
-        console.log(userDB);
-        (userDB) ? await updateDatabase(userDatabase, message.author.tag, userDB, timer) : await addUser(userDatabase, message.author.tag, timer);
-    }, /*60000*/ 1000 * timer);
-    
+        //update database
+        updateDatabase(message, timer);
+        
+    }, /*60000*/ 1000 * timer);   
+}
+
+let updateDatabase = async (message: Message, timer: Number) => {
+    //if user exists in DB, execute Update operation; execute Add operation otherwise.
+    let userDB = await userDatabase.collection('Guild').doc(message.author.tag).get();
+    (userDB) ? await updateUserTotalTime(userDatabase, message.author.tag, userDB, timer) : await addUser(userDatabase, message.author.tag, timer);
 }
 
 

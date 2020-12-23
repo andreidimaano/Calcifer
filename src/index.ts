@@ -1,10 +1,9 @@
 import { Client } from 'discord.js'
-import { onMessage } from './eventHandlers'
+import { onMessage } from './invoker/MessagInvoker';
 require('dotenv').config();
 
 const client = new Client();
 
-//login
 client.login(process.env.TESTTOKEN);
 //client.login(process.env.DISCORDTOKEN);
 
@@ -21,3 +20,6 @@ client.on('message', async (message) => {
 
     await onMessage(message);
 })
+
+
+

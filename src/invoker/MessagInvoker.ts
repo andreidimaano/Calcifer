@@ -1,9 +1,9 @@
-import {Message, User, Guild, MessageEmbed } from 'discord.js'
-import { CancelPomodoro } from './command/cancel/CancelPomodoro';
-import { Cook } from './command/cook/Cook';
-import { Default } from './command/default/Default';
-import { helpEmbed } from './command/help/Help';
-import { Pomodoro } from './command/pomodoro/Pomodoro'
+import { Message } from 'discord.js'
+import { CancelPomodoro } from '../command/cancel/CancelPomodoro';
+import { Cook } from '../command/cook/Cook';
+import { Default } from '../command/default/Default';
+import { Help } from '../command/help/Help';
+import { Pomodoro } from '../command/pomodoro/Pomodoro'
 
 interface Arguments {
     command: string | undefined;
@@ -28,9 +28,15 @@ let executeCommand = async (message: Message, args: Arguments) => {
     //(1) no discord guild exists
     if(!message.guild) return;
 
+    console.log(args);
+
     switch(args.command) {
-        case ('pomodoro' || 'pom'): {
+        case ('pom'): {
             (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
+            break;
+        }
+        case ('pomodoro'): {
+            await Pomodoro(message, 25);
             break;
         }
         case ('cancel'): {
@@ -42,14 +48,10 @@ let executeCommand = async (message: Message, args: Arguments) => {
             break;
         }
         case 'help' : {
-            await message.react('😡');
-            await message.channel.send(
-                `${message.author} Fine, like moving the castle isn\'t hard enough!`, 
-                helpEmbed
-            );
+            await Help(message);
             break;
         }
-        default : {
+        default: {
             await Default(message);
         }
     }

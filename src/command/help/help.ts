@@ -1,6 +1,14 @@
-import { MessageEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 
-export let helpEmbed = new MessageEmbed()
+export let Help = async (message: Message) : Promise<void> => {
+    await message.react('😡');
+    await message.channel.send(
+        `${message.author} Fine, like moving the castle isn\'t hard enough!`, 
+        helpEmbed
+    );
+}
+
+let helpEmbed = new MessageEmbed()
     .setColor('#dc2f02')
     .setTitle('Commands')
     .setDescription('Here is the list of commands available')

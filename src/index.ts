@@ -11,6 +11,7 @@ if (firebase.apps.length === 0) {
 }
 guildDatabase = firebase.firestore();
 
+client.destroy();
 client.login(process.env.DISCORDTOKEN);
 
 client.on('ready', async () => {
@@ -36,5 +37,6 @@ client.on('message', async (message) => {
 client.on('guildCreate', async (guildData) => {
     addGuild(guildDatabase, guildData);
 })
+
 
 

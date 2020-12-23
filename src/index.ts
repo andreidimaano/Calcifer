@@ -8,8 +8,7 @@ const client = new Client();
 let guildDatabase: any;
 
 let main = async () => {
-    client.login(process.env.TESTTOKEN);
-    //client.login(process.env.DISCORDTOKEN);
+    client.login(process.env.DISCORDTOKEN);
     if (firebase.apps.length === 0) {
         firebase.initializeApp({});
     }

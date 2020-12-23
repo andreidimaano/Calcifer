@@ -1,5 +1,6 @@
 import { Client } from 'discord.js'
 import firebase from 'firebase';
+import { initializeFirebase } from './database/FirebaseConfig';
 import { addGuild, isValidGuildQuery } from './database/FirebaseCRUD';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
@@ -7,7 +8,7 @@ require('dotenv').config();
 const client = new Client();
 let guildDatabase: any;
 if (firebase.apps.length === 0) {
-    firebase.initializeApp({});
+    initializeFirebase();
 }
 guildDatabase = firebase.firestore();
 

@@ -1,28 +1,44 @@
 import { Client } from 'discord.js'
-import { onMessage } from './eventHandlers'
+import firebase from 'firebase';
+import { addGuild, isValidGuildQuery } from './database/FirebaseCRUD';
+import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
 
-
 const client = new Client();
+let guildDatabase: any;
 
-//login
-client.login(process.env.DISCORDTOKEN);
+let main = async () => {
+    client.login(process.env.DISCORDTOKEN);
+    if (firebase.apps.length === 0) {
+        firebase.initializeApp({});
+    }
+    guildDatabase = firebase.firestore();
+}
 
-//print message confirming the bot is logged in
-client.on('ready', () =>{
+main();
+
+client.on('ready', async () => {
+    await client.user?.setActivity({
+        type: 'PLAYING',
+        name: ' | c: help',
+    })
     console.log(`Logged in as ${client.user?.tag}!`);
 })
 
 client.on('message', async (message) => {
     if(message.author.bot) return;
 
-    if(message.content === 'ping'){
-        message.reply('pong')
+    //for servers where the bot is already in
+    let guildExists = await isValidGuildQuery(guildDatabase, message.guild!.id);
+    if (!guildExists) {
+        await addGuild(guildDatabase, message.guild!);
     }
 
-    if(message.content === 'pee'){
-        message.reply('Poop')
-    }
-
-    await onMessage(message, client.user!);
+    await onMessage(message);
 })
+
+client.on('guildCreate', async (guildData) => {
+    addGuild(guildDatabase, guildData);
+})
+
+

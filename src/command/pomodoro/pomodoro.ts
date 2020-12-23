@@ -13,8 +13,6 @@ export let Pomodoro = async ( message: Message, time?: number) => {
     let timer = (time && time <= 120 && time >= 10) ? time : 25
     let author = message.author.tag;
     
-
-    console.log(currentMembersWorking);
     if(currentlyWorking(author)) {
         return await message.reply('You\'re already working!');
     }

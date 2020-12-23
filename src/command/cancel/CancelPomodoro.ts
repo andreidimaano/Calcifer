@@ -1,15 +1,16 @@
 import { Message } from "discord.js";
-import { currentlyWorking, removeMember } from "../pomodoro/PomodoroMembers";
+import { currentlyWorking, currentMembersWorking, removeMember } from "../pomodoro/PomodoroMembers";
 import { canceledPomodoroMembers } from "./PomodoroCanceledMembers";
 
 export let CancelPomodoro = async (message: Message) : Promise<void> => {
-    if(!currentlyWorking) {
+    if(!currentlyWorking(message.author.tag)) {
         await message.reply(
-            'You are not currently working! Start a session by typing c: pomodoro'
+            'You are not currently working! Start a session by typing ```c: pomodoro```'
         );
         return;
     } else {
-        removeMember(canceledPomodoroMembers, message.author.tag);   
+        removeMember(currentMembersWorking, message.author.tag);   
+        console.log('canceled: ',currentMembersWorking);
         canceledPomodoroMembers.push(message.author.tag);
     }
 

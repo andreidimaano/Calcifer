@@ -43,6 +43,10 @@ let executeCommand = async (message: Message, args: Arguments) => {
             await CancelPomodoro(message);
             break;
         }
+        case ('productivity'): {
+            await CancelPomodoro(message);
+            break;
+        }
         case 'cook' : {
             await Cook(message);
             break;

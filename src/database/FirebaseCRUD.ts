@@ -1,6 +1,33 @@
 import { Guild, Snowflake } from "discord.js";
 import firebase from "firebase";
 
+/* User CRUD */
+//Create
+export let addUser = async (database: firebase.firestore.Firestore, guildId: string, authorTag: string, time: Number) => {
+    try {
+        await database.collection('Guilds').doc(guildId).collection('Users').doc(authorTag).set({
+            'minutesStudied': time
+        })
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+//Read
+export let getUserTime = async (database: firebase.firestore.Firestore, guildId: string, authorTag: string): Promise<number> => {
+    try {
+        let user = await database.collection('Guilds').doc(guildId).collection('Users').doc(authorTag).get();
+        if(user.exists){
+            return user.data()!.minutesStudied;
+        }
+    } catch(error) {
+        console.log(error);
+    }
+
+    return -1;
+}
+
+//Update
 export let updateUserTotalTime = async (database: firebase.firestore.Firestore, guildId: string, authorTag: string, userDB: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>, time: Number) => {
     console.log('update is called');
     try {
@@ -13,16 +40,11 @@ export let updateUserTotalTime = async (database: firebase.firestore.Firestore, 
     }
 }
 
-export let addUser = async (database: firebase.firestore.Firestore, guildId: string, authorTag: string, time: Number) => {
-    try {
-        await database.collection('Guilds').doc(guildId).collection('Users').doc(authorTag).set({
-            'minutesStudied': time
-        })
-    } catch(error) {
-        console.log(error);
-    }
-}
 
+
+/* GUILD CRUD */
+
+//Create
 export let addGuild = async (database: firebase.firestore.Firestore, guildData: Guild) => {
     try {
         console.log('add guild called')
@@ -37,53 +59,10 @@ export let addGuild = async (database: firebase.firestore.Firestore, guildData: 
     }
 }
 
+//Read
 export let isValidGuildQuery = async (database: firebase.firestore.Firestore, guildId: string): Promise<Boolean> => {
     console.log('fuunction called');
     let guild = await database.collection('Guilds').doc(guildId).get();
     console.log(guild.exists);
     return (guild.exists);
 }
-
-// export let isValidUserQuery = async (database: firebase.firestore.Firestore, guildId: string, author: string): Promise<Boolean> => {
-//     let user = await database.collection('Guild').doc(guildId).collection('Users').doc(author).get();
-//     return (user) ? true: false;
-// }
-
-/*
-Guilds(Servers) -> Guild -> Users -> User -> minutesStudied
-userDatabase.collection('Guilds').doc(guildid).collection(Users).doc(message.author.tag).update({})
-userDarabase.collection('Guilds').doc('GuildId').set({ 
-    'guildName: '
-    'guildOwner: '
-    'guildMemberCount: '
-})
-
-message: guildId
-cross reference the guild Id with the DB
-let guild = userDarabase.collection('Guilds').doc('GuildId').get()
-
-if !guild create guild 
-add user
-if guild update guild
-update user
-
-bot.on(guildCreate, () => {
-    create Guild
-})
-
-createGuild {
-    userDarabase.collection('Guilds').doc('GuildId').set({ 
-        'guildName: '
-        'guildOwner: '
-        'guildMemberCount: '
-    })
-}
-
-updateGuild {
-    updateUser
-}
-
-updateUser {
-    already created
-}
-*/

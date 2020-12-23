@@ -4,6 +4,7 @@ import { Cook } from '../command/cook/Cook';
 import { Default } from '../command/default/Default';
 import { Help } from '../command/help/Help';
 import { Pomodoro } from '../command/pomodoro/Pomodoro'
+import { Productivity } from '../command/productivity/productivity';
 
 interface Arguments {
     command: string | undefined;
@@ -44,7 +45,7 @@ let executeCommand = async (message: Message, args: Arguments) => {
             break;
         }
         case ('productivity'): {
-            await CancelPomodoro(message);
+            await Productivity(message);
             break;
         }
         case 'cook' : {

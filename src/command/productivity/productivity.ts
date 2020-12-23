@@ -7,7 +7,7 @@ let database = firebase.firestore();
 export let Productivity = async (message: Message) : Promise<void> => {
     let minutesStudied = await getUserTime(database, message.guild!.id, message.author.tag);
     if(minutesStudied === -1){
-        await message.reply(productivityMessage(minutesStudied.toString()));
+        await message.reply(productivityMessage('0'));
     } else {
         let messageConversion = minutesToHours(minutesStudied);
         await message.reply(productivityMessage(messageConversion));

@@ -1,5 +1,9 @@
-# Calcifer
-Calcifer is a Discord Study Bot that allows users to start Pomodoro Timers. 
+<h1 align="center">
+ 🔥 Calcifer 🔥
+</h1>
+<p align="center">
+  Inspired by my Code With Friends <a href="https://github.com/andreidimaano/rodelo">submission</a>, Calcifer is a Discord Study Bot that allows users to start Pomodoro Timers.
+</p>
 
 All Commands:<br />
 `c: pomodoro`<br />
@@ -10,9 +14,11 @@ All Commands:<br />
 `c: help`<br />
 `c: cook `<br />
 
-## Current Features
+<h2 align="center">
+Current Features
+</h2>
 
-### Pomodoro
+### 🍅 Pomodoro
 Start a Pomodoro Timer
 <br />
 `c: pomodoro` start a 25 minute timer (default timer)<br />
@@ -21,13 +27,16 @@ Start a Pomodoro Timer
 `c: pom pom` (new macro)<br />
 `c: cancel` cancel your timer<br />
 
-### Help
+### :information_source: Help
 Need some help? I've added a list of commands to get you started. I've also updated the bot's status. It now displays the help command
 <br /><br />
 `c: help` will return total amount of time studied
 <br />
 
-### Future
+<h2 align="center">
+Future
+</h2>
+
 In the future, I will be implementing a function to check how much time is left on the timer
 If you have any requests, Feel free to add them in Issues
 

@@ -1,42 +1,71 @@
-import { Client } from 'discord.js'
-import firebase from 'firebase';
-import { initializeFirebase } from './database/FirebaseConfig';
-import { addGuild, isValidGuildQuery } from './database/FirebaseCRUD';
+import { Client } from 'discord.js';
+import mongoose from 'mongoose';
+import { mongoUrl } from './constants';
+import { getUserTime } from './database/FirebaseCRUD';
+import { GuildModel } from './database/models/DiscordGuild';
+import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
+import { createUser, getUserMinutesStudied } from './database/resolvers/UserResolver';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
-
+//
 const client = new Client();
-// let guildDatabase: any;
-// if (firebase.apps.length === 0) {
-//     initializeFirebase();
-// }
-// guildDatabase = firebase.firestore();
+const main = async () => {
+    await mongoose.connect(mongoUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true
+    });
 
-client.login(process.env.DISCORDTOKEN);
+    // await createUser({
+    //     guildId:'418524483129704478', 
+    //     discordId: '418524483129704478',
+    //     discordTag: 'shaquilleoneil#2203',
+    //     minutesStudied: 20, 
+    // });
+    
+    let userData = {
+        guildId:'418524483129704478', 
+        discordId: '418524483129704478',
+        discordTag: 'shaquilleoneil#2203',
+    }
 
-client.on('ready', async () => {
-    await client.user?.setActivity({
-        type: 'PLAYING',
-        name: ' | c: help',
+    let minutes = await getUserMinutesStudied(userData);
+    console.log(minutes);
+
+    client.login(process.env.TESTTOKEN);
+
+    client.on('ready', async () => {
+        await client.user?.setActivity({
+            type: 'PLAYING',
+            name: ' | c: help',
+        })
+        console.log(`Logged in as ${client.user?.tag}!`);
     })
-    console.log(`Logged in as ${client.user?.tag}!`);
-})
+    
+    client.on('message', async (message) => {
+        if(message.author.bot) return;
 
-client.on('message', async (message) => {
-    if(message.author.bot) return;
+        //for servers that already have my bot
+        let guildExists = await GuildModel.exists({guildId: message?.guild?.id});
+        if(!guildExists) {
+            await createGuild(message.guild!);
+        }
 
-    //for servers where the bot is already in
-    // let guildExists = await isValidGuildQuery(guildDatabase, message.guild!.id);
-    // if (!guildExists) {
-    //     await addGuild(guildDatabase, message.guild!);
-    // }
+        await onMessage(message);
+    })
+    
+    client.on('guildCreate', async (guildData) => {
+        await createGuild(guildData);
+    })
 
-    await onMessage(message);
-})
+    client.on('guildMemberRemove', async (guildMember) => {
+        await updateGuild(guildMember.guild);
+    })
 
-client.on('guildCreate', async (guildData) => {
-    //addGuild(guildDatabase, guildData);
-})
+    client.on('guildMemberAdd', async (guildMember) => {
+        await updateGuild(guildMember.guild);
+    })
+}
 
-
-
+main();

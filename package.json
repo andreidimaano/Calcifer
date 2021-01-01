@@ -33,6 +33,7 @@
   "dependencies": {
     "discord.js": "^12.5.0",
     "dotenv": "^8.2.0",
-    "firebase": "^8.2.1"
+    "firebase": "^8.2.1",
+    "mongoose": "^5.11.9"
   }
 }

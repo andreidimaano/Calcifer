@@ -28,6 +28,8 @@ let helpEmbed = new MessageEmbed()
         { name: '\u200B', value: '\u200B' },
         { name: 'c: cancel', value: 'cancel your pomodoro timer'},
         { name: '\u200B', value: '\u200B' },
+        { name: 'c: productivity', value: 'check your working stats!'},
+        { name: '\u200B', value: '\u200B' },
         { name: 'c: cook', value: 'for the memes'},
         { name: '\u200B', value: '\u200B' },
     )

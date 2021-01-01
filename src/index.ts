@@ -5,7 +5,7 @@ import { GuildModel } from './database/models/DiscordGuild';
 import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
-//
+
 const client = new Client();
 const main = async () => {
     await mongoose.connect(mongoUrl, {

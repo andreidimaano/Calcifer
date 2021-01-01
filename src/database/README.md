@@ -2,7 +2,7 @@
 
 >**I'm so sorry but that would be confidential information.**
 
-For Calcifer's database, I used <a href="https://www.mongodb.com/">MongoDB</a> because 1. there's a nice free tier and 2. Google Firestore only works well when you're hosting on Google Firebase 💢😠💢. I've found that <a href=https://mongoosejs.com/>Mongoose</a> is a great library for working with MongoDB in node. Overall, the CRUD operations are pretty simple in MongoDB. The documentation for Mongoose is great. I had a few bumps here and there while working with the callbacks(which totally was not working for me) but I was able to get it to work.
+For Calcifer's database, I used <a href="https://www.mongodb.com/">MongoDB</a> because 1. there's a nice free tier and 2. Google Firestore only works well when you're hosting on Google Firebase 💢😠💢. I've found that <a href=https://mongoosejs.com/>Mongoose</a> is a great library for working with MongoDB in node. Overall, the CRUD operations are pretty simple in MongoDB. The documentation for Mongoose is great.
 
 <h1>Users</h1>
 <p><a href="https://github.com/andreidimaano/Calcifer/blob/database/src/database/models/User.ts">Users</a> is a collection of users. Each Guild has it's own database populated with its Users. It is made purely for statistics. Click this <a href="https://github.com/andreidimaano/Calcifer/blob/database/src/database/resolvers/GuildResolver.ts">link</a> to look at the Guild database functions (explained below).</p>

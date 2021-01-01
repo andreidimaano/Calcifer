@@ -2,7 +2,7 @@
  🔥 Calcifer 🔥
 </h1>
 <p align="center">
-  Inspired by my Code With Friends <a href="https://github.com/andreidimaano/rodelo">submission</a>, Calcifer is a Discord Study Bot that allows users to start Pomodoro Timers.
+  Inspired by my Code With Friends <a href="https://github.com/andreidimaano/rodelo">submission</a>, Calcifer is a Discord Study Bot that allows users to start Pomodoro Timers. Click this <a href="https://discord.com/oauth2/authorize?client_id=781277794826715176&scope=bot">link</a> to add it to your server
 </p>
 
 All Commands:<br />
@@ -44,7 +44,7 @@ Need some help? I've added a list of commands to get you started. I've also upda
 Future
 </h2>
 
-In the future, I will be implementing a function to check how much time is left on the timer
-If you have any requests, Feel free to add them in Issues
+In the future, I will be implementing a function to check how much time is left on the timer.
+If you have any requests, feel free to add them in Issues
 
-I made the bot for Mayuko's Discord Server. If you would like to use it in your own servers, let me know by adding and issue. You can also contact me through my website. I'm currently testing the bot to see how much it would cost to make it available to the general public. I'm only in college, and I don't make money LOL. If you would like to sponsor server fees, Let me Know! :D
+I'm currently testing the bot to see how much it would cost to make it available to the general public. I'm only in college, and I don't make money LOL. If you would like to sponsor server fees, Let me Know! :D

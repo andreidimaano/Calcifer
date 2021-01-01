@@ -1,4 +1,4 @@
-<h1>Calcifer Database</h1>
+<h1 align="center">💾Calcifer Database💾</h1>
 
 >I'm so sorry but that would be confidential information.
 

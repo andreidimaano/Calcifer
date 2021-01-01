@@ -23,7 +23,7 @@ You can query the time you have studied by typing ```c: productivity```. If you 
 
 <h3>Update</h3>
 
-Everytime a user starts and *finishes* a pomodoro, the user's total time studied will be updated. If you change your Discord Tag, the bot will still work because I reference your Discord ID, however, I won't be able to look you up on the database if you happen to Private Message me on Discord. 
+Everytime a user starts and *finishes* a pomodoro, the user's total time studied will be updated. If you change your Discord Tag, the bot will still work because I reference your Discord ID, however, I won't be able to look you up on the database if you happen to Private Message me on Discord. If you use this bot in different servers, you will get different results based on each indiviual server.
 
 <h3>Future</h3>
 

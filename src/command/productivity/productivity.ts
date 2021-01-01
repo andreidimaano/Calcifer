@@ -1,18 +1,21 @@
 import { Message } from "discord.js";
-import firebase from "firebase";
-import { getUserTime } from "../../database/FirebaseCRUD";
-
-let database = firebase.firestore();
+import { getUserMinutesStudied, userExists } from "../../database/resolvers/UserResolver";
+import { DiscordUserData } from "../../types";
 
 export let Productivity = async (message: Message) : Promise<void> => {
-    let minutesStudied = await getUserTime(database, message.guild!.id, message.author.tag);
-    if(minutesStudied === -1){
+    let userData: DiscordUserData = {
+        guildId: message.guild!.id,
+        discordId: message.author.id,
+        discordTag: message.author.tag,
+    }
+    let isUser = await userExists(userData);
+    if(!isUser){
         await message.reply(productivityMessage('0'));
     } else {
+        let minutesStudied = await getUserMinutesStudied(userData);
         let messageConversion = minutesToHours(minutesStudied);
         await message.reply(productivityMessage(messageConversion));
     }
-    
 }
 
 let productivityMessage = (minutesStudied: string): string => {

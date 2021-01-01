@@ -1,17 +1,14 @@
 import { Message } from "discord.js";
-import firebase from "firebase";
-import { initializeFirebase } from "../../database/FirebaseConfig";
-import { addUser, updateUserTotalTime } from "../../database/FirebaseCRUD";
+import { createUser, updateUser, userExists } from "../../database/resolvers/UserResolver";
+import { DiscordUserData } from "../../types";
 import { canceledPomodoroMembers, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
-import { currentlyWorking, currentMembersWorking, removeMember} from "./PomodoroMembers";
-
-initializeFirebase();
-let userDatabase = firebase.firestore();
+import { currentlyWorking, currentMembersWorking, removeMember } from "./PomodoroMembers";
 
 export let Pomodoro = async ( message: Message, time?: number) => {
     let timer = (time && time <= 120 && time >= 10) ? time : 25
     let author = message.author.tag;
+    let authorId = message.author.id;
     let guildId = message.guild!.id;
     
     if(currentlyWorking(author)) {
@@ -26,17 +23,26 @@ export let Pomodoro = async ( message: Message, time?: number) => {
         if(!isCanceledPomodoro(author)) {
             await message.channel.send(message.author, endEmbed);
             removeMember(currentMembersWorking, author);
-            //updateDatabase(author, guildId, timer);
+            updateDatabase(guildId, authorId, author, timer);
         } else {
             removeMember(canceledPomodoroMembers, author);
         }
     }, 60000 * timer);   
 }
 
-let updateDatabase = async (author: string, guildId: string, timer: Number) => {
-    //if user exists in DB, execute Update operation; execute Add operation otherwise.
-    let user = await userDatabase.collection('Guilds').doc(guildId).collection('Users').doc(author).get();
-    (user.exists) ? await updateUserTotalTime(userDatabase, guildId, author, user, timer) : await addUser(userDatabase, guildId, author, timer);
+let updateDatabase = async (guildId: string, discordId: string, discordTag: string, minutesStudied: number) => {
+    let userData: DiscordUserData = {
+        guildId: guildId,
+        discordId: discordId,
+        discordTag: discordTag,
+    }
+    
+    let isUser = await userExists(userData);
+    if(!isUser){
+        createUser(userData, minutesStudied)
+    } else {
+        updateUser(userData, minutesStudied);
+    }
 }
 
 

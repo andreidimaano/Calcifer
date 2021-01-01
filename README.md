@@ -11,6 +11,7 @@ All Commands:<br />
 `c: pom`<br />
 `c: pom pom`<br />
 `c: cancel`<br />
+`c: productivity`<br />
 `c: help`<br />
 `c: cook `<br />
 
@@ -27,10 +28,16 @@ Start a Pomodoro Timer
 `c: pom pom` (new macro)<br />
 `c: cancel` cancel your timer<br />
 
+### 📊 Productivity
+View your Stats! The database is finally here. Start some pomodoros and you'll accumulate working hours. To see how much you've been working run the productivity command.
+<br /><br />
+`c: productivity` will return total amount of time studied
+<br />
+
 ### :information_source: Help
 Need some help? I've added a list of commands to get you started. I've also updated the bot's status. It now displays the help command
 <br /><br />
-`c: help` will return total amount of time studied
+`c: help` will return a list of helpful commands.
 <br />
 
 <h2 align="center">

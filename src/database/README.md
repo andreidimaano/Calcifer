@@ -6,6 +6,7 @@
 Guild Users is a collection of users. Each Guild has it's own database populated with its Users. It is made purely for statistics.
 
 <h3>Data Fields</h3>
+
 `discordId: Your Discord Id`<br />
 `discordTag: Your Discord Tag`<br />
 `minutesStudied: How long you have studied for`<br />
@@ -31,6 +32,7 @@ I'm considering adding a field where members can check for their weekly, monthly
 The Guilds collection contains all the servers that use Calcifer. It is made purely for statistics.
 
 <h3>Data Fields</h3>
+
 `guildName: Name of the Server`<br />
 `guildOwner: Discord Id of Server Owner (in case I have to reprimand the owner's constituents :)`<br />
 `guildMemberCount: How many Users are in the Server`<br />

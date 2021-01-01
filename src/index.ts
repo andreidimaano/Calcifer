@@ -1,10 +1,8 @@
 import { Client } from 'discord.js';
 import mongoose from 'mongoose';
 import { mongoUrl } from './constants';
-import { getUserTime } from './database/FirebaseCRUD';
 import { GuildModel } from './database/models/DiscordGuild';
 import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
-import { createUser, getUserMinutesStudied } from './database/resolvers/UserResolver';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
 //
@@ -17,23 +15,7 @@ const main = async () => {
         useCreateIndex: true
     });
 
-    // await createUser({
-    //     guildId:'418524483129704478', 
-    //     discordId: '418524483129704478',
-    //     discordTag: 'shaquilleoneil#2203',
-    //     minutesStudied: 20, 
-    // });
-    
-    let userData = {
-        guildId:'418524483129704478', 
-        discordId: '418524483129704478',
-        discordTag: 'shaquilleoneil#2203',
-    }
-
-    let minutes = await getUserMinutesStudied(userData);
-    console.log(minutes);
-
-    client.login(process.env.TESTTOKEN);
+    client.login(process.env.DISCORDTOKEN);
 
     client.on('ready', async () => {
         await client.user?.setActivity({

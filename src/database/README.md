@@ -13,11 +13,11 @@ Guild Users is a collection of users. Each Guild has it's own database populated
 
 <h3>Create</h3>
 
-Everytime a user starts and *finishes* a pomodoro, the user's total time studied will be updated. 
+If you are not currently in the database, starting and *finishing* a pomodoro will add you to the database.
 
 <h3>Read</h3>
 
-You can query the time you have studied by typing ```c: productivity```.
+You can query the time you have studied by typing ```c: productivity```. If you do not exist in the database, your time will be 0.
 
 <h3>Update</h3>
 

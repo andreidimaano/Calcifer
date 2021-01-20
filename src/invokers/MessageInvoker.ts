@@ -8,8 +8,8 @@ import { Productivity } from '../command/productivity/productivity';
 
 interface Arguments {
     command: string | undefined;
-    time?: number;
-    //add other arguments later
+    workTime?: number;
+    breakTime?: number;
 }
 
 export const onMessage = async (message: Message ) : Promise<void> => {
@@ -30,14 +30,15 @@ let executeCommand = async (message: Message, args: Arguments) => {
     //(1) no discord guild exists
     if(!message.guild) return;
 
-    console.log(args);
+    console.log(`author: ${message.author.tag}`);
+    console.log('args: ', args);
     switch(args.command) {
         case ('pom'): {
-            (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
+            (!args.workTime) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime);
             break;
         }
         case ('pomodoro'): {
-            (!args.time) ? await Pomodoro(message, 25) : await Pomodoro(message, args.time);
+            (!args.workTime) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime);
             break;
         }
         case ('cancel'): {
@@ -71,26 +72,34 @@ let parseArguments = (messageContent: string) : Arguments => {
     //remove command prefix
     let content = messageContent.slice(3);
     let args = content.split(' ').map((argument) => argument.trim());
-    let time = undefined;
-    let command = undefined;
+    let workTime = 0;
+    let breakTime = 0;
+    let command = 'default';
 
-    if(args.length <= 2){
+    if(args.length == 4 && args[2] == 'break') {
+        command = args[0].toLowerCase();
+        let parsedWorkTime = parseInt(args[1]);
+        let parsedBreakTime = parseInt(args[3]);
+        workTime = (isNaN(parsedWorkTime)) ? 0 : parsedWorkTime;
+        breakTime = (isNaN(parsedBreakTime)) ? 0 : parsedBreakTime;
+    } else if(args.length <= 2){
         command = args[0].toLowerCase();
         if(args.length > 1) {
             //case for pom pom macro
             if(typeof args[1] === "string" && isNaN(args[1] as any)){
                 if(args[1] == 'pom'){
-                    time = 50;
+                    workTime = 50;
                 }
             //case for pomodoro [time]
             } else {
-                time = parseInt(args[1]);
+                workTime = parseInt(args[1]);
             }
         }
     }
     return {
         command: command,
-        time: time
+        workTime: workTime,
+        breakTime: breakTime
     };
 };
 

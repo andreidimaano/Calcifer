@@ -15,7 +15,7 @@ const main = async () => {
         useCreateIndex: true
     });
 
-    client.login(process.env.TESTTOKEN);
+    client.login(process.env.DISCORDTOKEN);
 
     client.on('ready', async () => {
         await client.user?.setActivity({

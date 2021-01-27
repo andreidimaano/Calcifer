@@ -50,12 +50,12 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
                     removeMember(currentMembersOnBreak, author);
                     console.log('after: ')
                     printArray(currentMembersOnBreak);
-                }, /*60000*/ 1000 * breakTimer!);
+                }, 60000 * breakTimer!);
             }
         } else {
             removeMember(canceledPomodoroMembers, author);
         }
-    }, /*60000*/ 1000 * workTimer); 
+    }, 60000 * workTimer); 
 }
 
 

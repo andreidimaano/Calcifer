@@ -5,11 +5,17 @@
   Inspired by my Code With Friends <a href="https://github.com/andreidimaano/rodelo">submission</a>, Calcifer is a Discord Study Bot that allows users to start Pomodoro Timers. Click this <a href="https://discord.com/oauth2/authorize?client_id=781277794826715176&scope=bot">link</a> to add it to your server
 </p>
 
+Latest Feature:<br />
+Start a pomodoro timer with a break! You're limited to a 5 - 30 minute break. Calcifer will automatically set the timer to 5 minutes if the timer you specify is not within this range. You can also `c: cancel` a break just like canceling a work session. 
+
+`c: pom [time] break [time]`<br />
+
 All Commands:<br />
 `c: pomodoro`<br />
 `c: pomodoro [time]`<br />
 `c: pom`<br />
 `c: pom pom`<br />
+`c: pom [time] break [time]`<br />
 `c: cancel`<br />
 `c: productivity`<br />
 `c: help`<br />
@@ -24,9 +30,11 @@ Start a Pomodoro Timer
 <br />
 `c: pomodoro` start a 25 minute timer (default timer)<br />
 `c: pomodoro [time]` start a [time] minute timer || time must be within 10 - 120<br />
-`c: pom` start a 25 minute timer (new macro)<br />
-`c: pom pom` (new macro)<br />
-`c: cancel` cancel your timer<br />
+`c: pom` start a 25 minute timerbr />
+`c: pom [time]` start an x minute timer <br />
+`c: pom pom`<br />
+`c: pom [time] break [time]` start a pomodoro with breaks <br />
+`c: cancel` cancel your work timer or break timer <br />
 
 ### 📊 Productivity
 View your Stats! The database is finally here. Start some pomodoros and you'll accumulate working hours. To see how much you've been working run the productivity command.

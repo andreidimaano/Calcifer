@@ -26,6 +26,8 @@ let helpEmbed = new MessageEmbed()
         { name: '\u200B', value: '\u200B' },
         { name: 'c: pom', value: 'start 25 minute pomodoro timer'},
         { name: '\u200B', value: '\u200B' },
+        { name: 'c: pom [number] break [number]', value: 'start an x minute pomodoro timer and y minute break timer'},
+        { name: '\u200B', value: '\u200B' },
         { name: 'c: cancel', value: 'cancel your pomodoro timer'},
         { name: '\u200B', value: '\u200B' },
         { name: 'c: productivity', value: 'check your working stats!'},

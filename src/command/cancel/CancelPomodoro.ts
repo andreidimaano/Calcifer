@@ -1,19 +1,26 @@
 import { Message } from "discord.js";
-import { currentlyWorking, currentMembersWorking, removeMember } from "../pomodoro/PomodoroMembers";
+import { removeMember } from "../pomodoro/ArrayFunctions";
+import { currentlyOnBreak, currentMembersOnBreak } from "../pomodoro/BreakMembers";
+import { currentlyWorking, currentMembersWorking } from "../pomodoro/PomodoroMembers";
 import { canceledPomodoroMembers } from "./PomodoroCanceledMembers";
 
 export let CancelPomodoro = async (message: Message) : Promise<void> => {
-    if(!currentlyWorking(message.author.tag)) {
+    if(currentlyOnBreak(message.author.tag)) {
+        removeMember(currentMembersOnBreak, message.author.tag);
         await message.reply(
-            'You are not currently working! Start a session by typing ```c: pomodoro```'
+            'Break Canceled'
         );
         return;
-    } else {
+    } else if(!currentlyWorking(message.author.tag) && !currentlyOnBreak(message.author.tag)) {
+        await message.reply(
+            'You are not currently working and not currently on break! Start a session by typing ```c: pomodoro```'
+        );
+        return;
+    } else if(currentlyWorking(message.author.tag)){
         removeMember(currentMembersWorking, message.author.tag);   
         canceledPomodoroMembers.push(message.author.tag);
+        await message.reply(
+            'Pomodoro Canceled'
+        );
     }
-
-    await message.reply(
-        'Pomodoro Canceled'
-    );
 }

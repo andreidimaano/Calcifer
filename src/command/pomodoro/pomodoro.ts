@@ -3,6 +3,7 @@ import { createUser, updateUser, userExists } from "../../database/resolvers/Use
 import { DiscordUserData } from "../../types";
 import { canceledPomodoroMembers, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
 import { printArray, removeMember } from "./ArrayFunctions";
+import { endBreakEmbed, startBreakEmbed } from "./BreakEmbed";
 import { currentlyOnBreak, currentMembersOnBreak } from "./BreakMembers";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
 import { currentlyWorking, currentMembersWorking } from "./PomodoroMembers";
@@ -43,10 +44,12 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
             
             //add break
             if(breakTime) {
+                await message.channel.send(message.author, startBreakEmbed(breakTimer));
                 currentMembersOnBreak.push(author);
                 console.log('before: ');
                 printArray(currentMembersOnBreak);
                 setTimeout(async () => {
+                    await message.channel.send(message.author, endBreakEmbed);
                     removeMember(currentMembersOnBreak, author);
                     console.log('after: ')
                     printArray(currentMembersOnBreak);

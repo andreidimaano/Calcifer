@@ -4,7 +4,7 @@ export let startEmbed = (time: number) => {
     return new MessageEmbed()
     .setColor('#dc2f02')
     .setTitle('Pomodoro')
-    .setTimestamp()
+    .setTimestamp(Date.now())
     .addFields(
         { name: `:tomato: Your timer is set to ${time} minutes :tomato:`, value: ':blush: Happy Working! :blush:'},
     )

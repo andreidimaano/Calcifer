@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { createUser, updateUser, userExists } from "../../database/resolvers/UserResolver";
 import { DiscordUserData } from "../../types";
-import { canceledPomodoroMembers, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
+import { canceledBreakMembers, canceledPomodoroMembers, isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
 import { printArray, removeMember } from "./ArrayFunctions";
 import { endBreakEmbed, startBreakEmbed } from "./BreakEmbed";
 import { currentlyOnBreak, currentMembersOnBreak } from "./BreakMembers";
@@ -22,6 +22,8 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
     }
     
     currentMembersWorking.push(author);
+    console.log('working members: ');
+    printArray(currentMembersWorking);
 
     let workTimer = (workTime && workTime <= 120 && workTime >= 10) ? workTime : 25;
     let breakTimer = (breakTime && breakTime <= 30 && breakTime >= 5) ? breakTime: 5;
@@ -32,8 +34,8 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
         '\`\`\`Error: work time specified is not within work time limits, work time set to 25\`\`\`' 
         : '';     
     let errorMessage = workErrorMessage + breakErrorMessage;
-
     await message.reply(errorMessage, startEmbed(workTimer));
+    
     setTimeout(async () => {
         if(!isCanceledPomodoro(author)) {
             await message.channel.send(message.author, endEmbed);
@@ -46,16 +48,19 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
             if(breakTime) {
                 await message.channel.send(message.author, startBreakEmbed(breakTimer));
                 currentMembersOnBreak.push(author);
-                console.log('before: ');
-                printArray(currentMembersOnBreak);
                 setTimeout(async () => {
-                    await message.channel.send(message.author, endBreakEmbed);
-                    removeMember(currentMembersOnBreak, author);
-                    console.log('after: ')
-                    printArray(currentMembersOnBreak);
+                    if(!isCanceledBreak(author)){
+                        await message.channel.send(message.author, endBreakEmbed);
+                        removeMember(currentMembersOnBreak, author);
+                    } else {
+                        console.log('Break was canceled');
+                        removeMember(canceledBreakMembers, author);
+                    }
+                    
                 }, 60000 * breakTimer!);
             }
         } else {
+            console.log('Pomodoro was canceled');
             removeMember(canceledPomodoroMembers, author);
         }
     }, 60000 * workTimer); 

@@ -3,7 +3,7 @@ import { CancelPomodoro } from '../command/cancel/CancelPomodoro';
 import { Cook } from '../command/cook/Cook';
 import { Default } from '../command/default/Default';
 import { Help } from '../command/help/help';
-import { Pomodoro } from '../command/pomodoro/pomodoro'
+import { PomodoroTimer } from '../command/pomodoro/pomodoroTimer'
 import { Productivity } from '../command/productivity/productivity';
 import { prefix } from '../constants';
 import { parseArguments } from './messageParser';
@@ -36,11 +36,11 @@ let executeCommand = async (message: Message, args: Arguments) => {
     console.log('args: ', args);
     switch(args.command) {
         case ('pom'): {
-            (!args.workTime) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
+            (!args.workTime) ? await PomodoroTimer(message, 25) : await PomodoroTimer(message, args.workTime, args.breakTime);
             break;
         }
         case ('pomodoro'): {
-            (!args.workTime) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
+            (!args.workTime) ? await PomodoroTimer(message, 25) : await PomodoroTimer(message, args.workTime, args.breakTime);
             break;
         }
         case ('cancel'): {

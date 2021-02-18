@@ -48,6 +48,12 @@ const main = async () => {
     client.on('guildMemberAdd', async (guildMember) => {
         await updateGuild(guildMember.guild);
     })
+
+    client.on('messageReactionAdd', (messageReaction, user) => {
+        // console.log(`Message: ${messageReaction.message.id}`);
+        // console.log(`Emoji: ${messageReaction.emoji}`);
+        // console.log(user.tag);
+    })
 }
 
 main();

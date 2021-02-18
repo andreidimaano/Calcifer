@@ -1,29 +1,27 @@
 import { Message } from "discord.js";
+import { createUserOnBreak, deleteUserOnBreak, isOnBreak } from "../../database/resolvers/UserOnBreakResolver";
 import { createUser, updateUser, userExists } from "../../database/resolvers/UserResolver";
+import { createUserWorking, deleteUserWorking, isWorking } from "../../database/resolvers/UserStudyingResolver";
 import { DiscordUserData } from "../../types";
 import { canceledBreakMembers, canceledPomodoroMembers, isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
-import { printArray, removeMember } from "./ArrayFunctions";
+import { removeMember } from "./ArrayFunctions";
 import { endBreakEmbed, startBreakEmbed } from "./BreakEmbed";
-import { currentlyOnBreak, currentMembersOnBreak } from "./BreakMembers";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
-import { currentlyWorking, currentMembersWorking } from "./PomodoroMembers";
 
-export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: number) => {
+export let PomodoroTimer = async ( message: Message, workTime?: number, breakTime?: number) => {
     let author = message.author.tag;
     let authorId = message.author.id;
     let guildId = message.guild!.id;
     
-    if(currentlyWorking(author)) {
+    let currentlyWorking = await isWorking(authorId);
+    if(currentlyWorking) {
         return await message.reply('You\'re already working!');
     }
 
-    if(currentlyOnBreak(author)) {
+    let currentlyOnBreak = await isOnBreak(authorId);
+    if(currentlyOnBreak) {
         return await message.reply('You\'re on break!');
     }
-    
-    currentMembersWorking.push(author);
-    console.log('working members: ');
-    printArray(currentMembersWorking);
 
     let workTimer = (workTime && workTime <= 120 && workTime >= 10) ? workTime : 25;
     let breakTimer = (breakTime && breakTime <= 30 && breakTime >= 5) ? breakTime: 5;
@@ -34,6 +32,8 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
         '\`\`\`Error: work time specified is not within work time limits, work time set to 25\`\`\`' 
         : '';     
     let errorMessage = workErrorMessage + breakErrorMessage;
+
+    createUserWorking(authorId, author, workTimer);
     await message.reply(errorMessage, startEmbed(workTimer));
     
     setTimeout(async () => {
@@ -41,29 +41,29 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
             await message.channel.send(message.author, endEmbed);
 
             //remove from study list
-            removeMember(currentMembersWorking, author);
+            await deleteUserWorking(authorId);
             updateDatabase(guildId, authorId, author, workTimer);
             
-            //add break
+            //start break
             if(breakTime) {
                 await message.channel.send(message.author, startBreakEmbed(breakTimer));
-                currentMembersOnBreak.push(author);
+                await createUserOnBreak(authorId, author);
                 setTimeout(async () => {
                     if(!isCanceledBreak(author)){
                         await message.channel.send(message.author, endBreakEmbed);
-                        removeMember(currentMembersOnBreak, author);
+                        await deleteUserOnBreak(authorId);
                     } else {
                         console.log('Break was canceled');
                         removeMember(canceledBreakMembers, author);
                     }
                     
-                }, 60000 * breakTimer!);
+                }, 60000 /*1000*/ * breakTimer!);
             }
         } else {
             console.log('Pomodoro was canceled');
             removeMember(canceledPomodoroMembers, author);
         }
-    }, 60000 * workTimer); 
+    }, 60000 /*1000*/ * workTimer); 
 }
 
 

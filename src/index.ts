@@ -5,6 +5,7 @@ import { mongoUrl, userWorking } from './constants';
 import { GuildModel } from './database/models/DiscordGuild';
 import { UserWorkingModel } from './database/models/UserWorking';
 import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
+import { deleteAllCanceled } from './database/resolvers/UserCanceledResolver';
 import { deleteUserWorking } from './database/resolvers/UserStudyingResolver';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
@@ -27,7 +28,7 @@ const main = async () => {
         })
         console.log(`Logged in as ${client.user?.tag}!`);
         
-        let membersWorking= await UserWorkingModel.find({});
+        let membersWorking = await UserWorkingModel.find({});
         
         membersWorking.forEach((user) => {
             if((user as userWorking).guildId){
@@ -41,6 +42,8 @@ const main = async () => {
                 deleteUserWorking((user as userWorking).discordId);
             }
         })
+
+        await deleteAllCanceled();
     })
     
     client.on('message', async (message) => {

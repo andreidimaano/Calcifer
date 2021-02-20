@@ -1,10 +1,10 @@
 import { Message } from "discord.js";
+import { deleteUserCanceledBreak, deleteUserCanceledPomodoro } from "../../database/resolvers/UserCanceledResolver";
 import { createUserOnBreak, deleteUserOnBreak, isOnBreak } from "../../database/resolvers/UserOnBreakResolver";
 import { createUser, updateUser, userExists } from "../../database/resolvers/UserResolver";
 import { createUserWorking, deleteUserWorking, isWorking } from "../../database/resolvers/UserStudyingResolver";
 import { DiscordUserData } from "../../types";
-import { canceledBreakMembers, canceledPomodoroMembers, isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
-import { removeMember } from "./ArrayFunctions";
+import { isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
 import { endBreakEmbed, startBreakEmbed } from "./BreakEmbed";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
 
@@ -54,14 +54,16 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
                         await deleteUserOnBreak(authorId);
                     } else {
                         console.log('Break was canceled');
-                        removeMember(canceledBreakMembers, author);
+                        //removeMember(canceledBreakMembers, author);
+                        await deleteUserCanceledBreak(authorId);
                     }
                     
                 }, 60000 /*1000*/ * breakTimer!);
             }
         } else {
             console.log('Pomodoro was canceled');
-            removeMember(canceledPomodoroMembers, author);
+            // removeMember(canceledPomodoroMembers, author);
+            await deleteUserCanceledPomodoro(authorId);
         }
     }, 60000 /*1000*/ * workTimer); 
 }

@@ -1,12 +1,13 @@
 import { UserWorkingModel } from '../models/UserWorking'
 
 //create
-export let createUserWorking = async (discordId: string, discordTag: string, minutes: number) => {
+export let createUserWorking = async (guildId: string, discordId: string, discordTag: string, minutes: number) => {
     try {
         let newUserStudying = new UserWorkingModel({
             discordId: discordId, 
             discordTag: discordTag,
             minutes: minutes,
+            guildId: guildId
         });
 
         await newUserStudying.save();

@@ -1,8 +1,11 @@
 import { Client } from 'discord.js';
 import mongoose from 'mongoose';
-import { mongoUrl } from './constants';
+import { updateDatabase } from './command/pomodoro/pomodoroTimer';
+import { mongoUrl, userWorking } from './constants';
 import { GuildModel } from './database/models/DiscordGuild';
+import { UserWorkingModel } from './database/models/UserWorking';
 import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
+import { deleteUserWorking } from './database/resolvers/UserStudyingResolver';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
 
@@ -15,7 +18,7 @@ const main = async () => {
         useCreateIndex: true
     });
 
-    client.login(process.env.DISCORDTOKEN);
+    client.login(process.env.TESTTOKEN);
 
     client.on('ready', async () => {
         await client.user?.setActivity({
@@ -23,6 +26,21 @@ const main = async () => {
             name: ' | c: help',
         })
         console.log(`Logged in as ${client.user?.tag}!`);
+        
+        let membersWorking= await UserWorkingModel.find({});
+        
+        membersWorking.forEach((user) => {
+            if((user as userWorking).guildId){
+                console.log(user);
+                updateDatabase(
+                    (user as userWorking).guildId, 
+                    (user as userWorking).discordId, 
+                    (user as userWorking).discordTag, 
+                    (user as userWorking).minutes
+                );
+                deleteUserWorking((user as userWorking).discordId);
+            }
+        })
     })
     
     client.on('message', async (message) => {

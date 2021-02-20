@@ -33,7 +33,7 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
         : '';     
     let errorMessage = workErrorMessage + breakErrorMessage;
 
-    createUserWorking(authorId, author, workTimer);
+    createUserWorking(guildId, authorId, author, workTimer);
     await message.reply(errorMessage, startEmbed(workTimer));
     
     setTimeout(async () => {
@@ -67,7 +67,7 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
 }
 
 
-let updateDatabase = async (guildId: string, discordId: string, discordTag: string, minutesStudied: number) => {
+export let updateDatabase = async (guildId: string, discordId: string, discordTag: string, minutesStudied: number) => {
     let userData: DiscordUserData = {
         guildId: guildId,
         discordId: discordId,

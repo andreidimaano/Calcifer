@@ -1,10 +1,10 @@
 import { Message } from "discord.js";
+import { deleteUserCanceledBreak, deleteUserCanceledPomodoro } from "../../database/resolvers/UserCanceledResolver";
 import { createUserOnBreak, deleteUserOnBreak, isOnBreak } from "../../database/resolvers/UserOnBreakResolver";
 import { createUser, updateUser, userExists } from "../../database/resolvers/UserResolver";
 import { createUserWorking, deleteUserWorking, isWorking } from "../../database/resolvers/UserStudyingResolver";
 import { DiscordUserData } from "../../types";
-import { canceledBreakMembers, canceledPomodoroMembers, isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
-import { removeMember } from "./ArrayFunctions";
+import { isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
 import { endBreakEmbed, startBreakEmbed } from "./BreakEmbed";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
 
@@ -33,7 +33,7 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
         : '';     
     let errorMessage = workErrorMessage + breakErrorMessage;
 
-    createUserWorking(authorId, author, workTimer);
+    createUserWorking(guildId, authorId, author, workTimer);
     await message.reply(errorMessage, startEmbed(workTimer));
     
     setTimeout(async () => {
@@ -54,20 +54,22 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
                         await deleteUserOnBreak(authorId);
                     } else {
                         console.log('Break was canceled');
-                        removeMember(canceledBreakMembers, author);
+                        //removeMember(canceledBreakMembers, author);
+                        await deleteUserCanceledBreak(authorId);
                     }
                     
                 }, 60000 /*1000*/ * breakTimer!);
             }
         } else {
             console.log('Pomodoro was canceled');
-            removeMember(canceledPomodoroMembers, author);
+            // removeMember(canceledPomodoroMembers, author);
+            await deleteUserCanceledPomodoro(authorId);
         }
     }, 60000 /*1000*/ * workTimer); 
 }
 
 
-let updateDatabase = async (guildId: string, discordId: string, discordTag: string, minutesStudied: number) => {
+export let updateDatabase = async (guildId: string, discordId: string, discordTag: string, minutesStudied: number) => {
     let userData: DiscordUserData = {
         guildId: guildId,
         discordId: discordId,

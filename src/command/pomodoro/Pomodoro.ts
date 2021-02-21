@@ -8,30 +8,15 @@ import { isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledM
 import { endBreakEmbed, startBreakEmbed } from "./BreakEmbed";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
 
-export let PomodoroTimer = async ( message: Message, workTime?: number, breakTime?: number) => {
+export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: number) => {
     let author = message.author.tag;
     let authorId = message.author.id;
     let guildId = message.guild!.id;
     
-    let currentlyWorking = await isWorking(authorId);
-    if(currentlyWorking) {
-        return await message.reply('You\'re already working!');
-    }
-
-    let currentlyOnBreak = await isOnBreak(authorId);
-    if(currentlyOnBreak) {
-        return await message.reply('You\'re on break!');
-    }
-
     let workTimer = (workTime && workTime <= 120 && workTime >= 10) ? workTime : 25;
     let breakTimer = (breakTime && breakTime <= 30 && breakTime >= 5) ? breakTime: 5;
-    let breakErrorMessage = (breakTime && (breakTime > 30 || breakTime < 5)) 
-        ? '\`\`\`Error: break time is not within break time limits, break time set to 5\`\`\`' 
-        : '';
-    let workErrorMessage = (workTime && (workTime > 120 || workTime < 10)) ? 
-        '\`\`\`Error: work time specified is not within work time limits, work time set to 25\`\`\`' 
-        : '';     
-    let errorMessage = workErrorMessage + breakErrorMessage;
+
+    let errorMessage = errorCheck(workTime, breakTime);
 
     createUserWorking(guildId, authorId, author, workTimer);
     await message.reply(errorMessage, startEmbed(workTimer));
@@ -66,6 +51,16 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
             await deleteUserCanceledPomodoro(authorId);
         }
     }, 60000 /*1000*/ * workTimer); 
+}
+
+export let errorCheck = (workTime?: number, breakTime?: number) => {
+    let breakErrorMessage = (breakTime && (breakTime > 30 || breakTime < 5)) 
+        ? '\`\`\`Error: break time is not within break time limits, break time set to 5\`\`\`' 
+        : '';
+    let workErrorMessage = (workTime && (workTime > 120 || workTime < 10)) ? 
+        '\`\`\`Error: work time specified is not within work time limits, work time set to 25\`\`\`' 
+        : '';     
+    return workErrorMessage + breakErrorMessage;
 }
 
 

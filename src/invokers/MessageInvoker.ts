@@ -3,9 +3,11 @@ import { CancelPomodoro } from '../command/cancel/CancelPomodoro';
 import { Cook } from '../command/cook/Cook';
 import { Default } from '../command/default/Default';
 import { Help } from '../command/help/help';
-import { PomodoroTimer } from '../command/pomodoro/pomodoroTimer'
+import { Pomodoro } from '../command/pomodoro/Pomodoro'
 import { Productivity } from '../command/productivity/productivity';
 import { prefix } from '../constants';
+import { isOnBreak } from '../database/resolvers/UserOnBreakResolver';
+import { isWorking } from '../database/resolvers/UserStudyingResolver';
 import { parseArguments } from './messageParser';
 
 export interface Arguments {
@@ -36,11 +38,13 @@ let executeCommand = async (message: Message, args: Arguments) => {
     console.log('args: ', args);
     switch(args.command) {
         case ('pom'): {
-            (!args.workTime) ? await PomodoroTimer(message, 25) : await PomodoroTimer(message, args.workTime, args.breakTime);
+            let validPomodoro = await canStartPomodoro(message);
+            (!args.workTime && validPomodoro) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
             break;
         }
         case ('pomodoro'): {
-            (!args.workTime) ? await PomodoroTimer(message, 25) : await PomodoroTimer(message, args.workTime, args.breakTime);
+            let validPomodoro = await canStartPomodoro(message);
+            (!args.workTime && validPomodoro) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
             break;
         }
         case ('cancel'): {
@@ -65,6 +69,24 @@ let executeCommand = async (message: Message, args: Arguments) => {
     }
     
 }
+
+let canStartPomodoro = async (message: Message) => {
+    let authorId = message.author.id;
+    let currentlyWorking = await isWorking(authorId);
+    if(currentlyWorking) {
+        await message.reply('You\'re already working!');
+        return false;
+    }
+
+    let currentlyOnBreak = await isOnBreak(authorId);
+    if(currentlyOnBreak) {
+        await message.reply('You\'re on break!');
+        return false;
+    }
+
+    return true;
+}
+
 
 let canHandleMessage = (message: Message) : boolean => {
     return (!message.author.bot && message.content.startsWith(prefix));

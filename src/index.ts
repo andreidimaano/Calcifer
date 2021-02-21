@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 import mongoose from 'mongoose';
-import { updateDatabase } from './command/pomodoro/pomodoroTimer';
+import { updateDatabase } from './command/pomodoro/Pomodoro';
 import { mongoUrl, userWorking } from './constants';
 import { GuildModel } from './database/models/DiscordGuild';
 import { UserWorkingModel } from './database/models/UserWorking';

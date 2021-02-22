@@ -33,3 +33,11 @@ export let deleteUserOnBreak = async (discordId: string) => {
         console.log(error);
     }
 }
+
+export let deleteUsersOnBreak = async () => {
+    try {
+        await UserBreakModel.deleteMany({});
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -6,6 +6,7 @@ import { GuildModel } from './database/models/DiscordGuild';
 import { UserWorkingModel } from './database/models/UserWorking';
 import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
 import { deleteAllCanceled } from './database/resolvers/UserCanceledResolver';
+import { deleteUsersOnBreak } from './database/resolvers/UserOnBreakResolver';
 import { deleteUserWorking } from './database/resolvers/UserStudyingResolver';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
@@ -42,8 +43,9 @@ const main = async () => {
                 deleteUserWorking((user as userWorking).discordId);
             }
         })
-
+        
         await deleteAllCanceled();
+        await deleteUsersOnBreak();
     })
     
     client.on('message', async (message) => {

@@ -37,7 +37,8 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
     await message.reply(errorMessage, startEmbed(workTimer));
     
     setTimeout(async () => {
-        if(!isCanceledPomodoro(authorId)) {
+        let canceledPomodoro = await isCanceledPomodoro(authorId);
+        if(!canceledPomodoro) {
             await message.channel.send(message.author, endEmbed);
 
             //remove from study list
@@ -49,7 +50,8 @@ export let PomodoroTimer = async ( message: Message, workTime?: number, breakTim
                 await message.channel.send(message.author, startBreakEmbed(breakTimer));
                 await createUserOnBreak(authorId, author);
                 setTimeout(async () => {
-                    if(!isCanceledBreak(authorId)){
+                    let breakCanceled = await isCanceledBreak(authorId);
+                    if(!breakCanceled){
                         await message.channel.send(message.author, endBreakEmbed);
                         await deleteUserOnBreak(authorId);
                     } else {

@@ -1,10 +1,9 @@
 import { Message } from "discord.js";
-import { deleteUserCanceledBreak, deleteUserCanceledPomodoro } from "../../database/resolvers/UserCanceledResolver";
+import { deleteUserCanceledBreak, deleteUserCanceledPomodoro, isCanceledBreak, isCanceledPomodoro } from "../../database/resolvers/UserCanceledResolver";
 import { createUserOnBreak, deleteUserOnBreak, isOnBreak } from "../../database/resolvers/UserOnBreakResolver";
 import { createUser, updateUser, userExists } from "../../database/resolvers/UserResolver";
 import { createUserWorking, deleteUserWorking, isWorking } from "../../database/resolvers/UserStudyingResolver";
 import { DiscordUserData } from "../../types";
-import { isCanceledBreak, isCanceledPomodoro } from "../cancel/PomodoroCanceledMembers";
 import { endBreakEmbed, startBreakEmbed } from "./BreakEmbed";
 import { endEmbed, startEmbed } from "./PomodoroEmbed";
 

@@ -2,10 +2,12 @@ import { Message } from 'discord.js'
 import { CancelPomodoro } from '../command/cancel/CancelPomodoro';
 import { Cook } from '../command/cook/Cook';
 import { Default } from '../command/default/Default';
+import { GroupPomodoro } from '../command/group/GroupPomodoro';
 import { Help } from '../command/help/help';
 import { Pomodoro } from '../command/pomodoro/Pomodoro'
 import { Productivity } from '../command/productivity/productivity';
 import { prefix } from '../constants';
+import { groupExists } from '../database/resolvers/GroupPomodoroResolver';
 import { isOnBreak } from '../database/resolvers/UserOnBreakResolver';
 import { isWorking } from '../database/resolvers/UserStudyingResolver';
 import { parseArguments } from './messageParser';
@@ -39,12 +41,23 @@ let executeCommand = async (message: Message, args: Arguments) => {
     switch(args.command) {
         case ('pom'): {
             let validPomodoro = await canStartPomodoro(message);
-            (!args.workTime && validPomodoro) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
+            if(validPomodoro) {
+                (!args.workTime)? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
+            }
             break;
         }
         case ('pomodoro'): {
             let validPomodoro = await canStartPomodoro(message);
-            (!args.workTime && validPomodoro) ? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
+            if(validPomodoro) {
+                (!args.workTime)? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
+            }
+            break;
+        }
+        case 'group' : {
+            let validGroupPomodoro = await canStartGroup(message);
+            if(validGroupPomodoro) {
+                await GroupPomodoro(message, args.workTime);
+            }
             break;
         }
         case ('cancel'): {
@@ -68,6 +81,29 @@ let executeCommand = async (message: Message, args: Arguments) => {
         }
     }
     
+}
+
+let canStartGroup = async (message: Message) => {
+    let connected = message.member?.voice?.channelID;
+
+    //check if groupPomodoro already exists in database
+    let channelId = message.channel.id;
+    let groupPomInProgress = await groupExists(channelId);
+    if(groupPomInProgress) {
+        await message.reply('Group Pomdoro in Progress');
+        return false;
+     } else if(connected === null) {
+        await message.reply('You are not connected to a voice channel');
+        return false;
+    } else if (!message.member?.voice?.channel?.name.includes('group')) {
+        await message.reply('You are not connected to a group pomodoro voice channel');
+        return false;
+    } else if(message.channel.type === 'text' && !message.channel.name.includes('group')) {
+        await message.reply('You can only start a group pomodoro in the group text channel');
+        return false;
+    }
+
+    return true;
 }
 
 let canStartPomodoro = async (message: Message) => {

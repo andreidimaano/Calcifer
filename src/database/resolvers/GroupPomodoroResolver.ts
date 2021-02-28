@@ -36,3 +36,11 @@ export let deleteGroup = async (channelId: string) => {
         console.log(error);
     }
 }
+
+export let deleteAllGroups = async () => {
+    try {
+        await GroupPomodoroModel.deleteMany({});
+    } catch (error) {
+        console.log(error);
+    }
+}

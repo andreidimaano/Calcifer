@@ -1,9 +1,10 @@
-import { Client } from 'discord.js';
+import { Channel, Client, TextChannel } from 'discord.js';
 import mongoose from 'mongoose';
 import { updateDatabase } from './command/pomodoro/Pomodoro';
 import { mongoUrl, userWorking } from './constants';
 import { GuildModel } from './database/models/DiscordGuild';
 import { UserWorkingModel } from './database/models/UserWorking';
+import { deleteAllGroups } from './database/resolvers/GroupPomodoroResolver';
 import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
 import { deleteAllCanceled } from './database/resolvers/UserCanceledResolver';
 import { deleteUserWorking } from './database/resolvers/UserStudyingResolver';
@@ -28,6 +29,8 @@ const main = async () => {
         })
         console.log(`Logged in as ${client.user?.tag}!`);
         
+        await deleteAllGroups();        
+
         let membersWorking = await UserWorkingModel.find({});
         
         membersWorking.forEach((user) => {

@@ -8,12 +8,13 @@ export let GroupPomodoro = async (message: Message, workTime?: number) => {
     let authorId = message.author.id;
     let authorTag = message.author.tag;
     let channelId = message.channel.id;
+    let voiceChannel = message.member?.voice?.channel ;
     let guildId = message.guild?.id;
     let workTimer = (workTime && workTime <= 120 && workTime >= 10) ? workTime : 25;
     let errorMessage = groupErrorCheck(workTime);
 
     //get all current members
-    let firstMembers = message.member?.voice?.channel?.members?.array();
+    let firstMembers = voiceChannel?.members?.array();
     let firstUsersToPing: string = "";
     firstMembers?.forEach(member => {
         firstUsersToPing = firstUsersToPing.concat(`${member.user.toString()} `);
@@ -25,7 +26,7 @@ export let GroupPomodoro = async (message: Message, workTime?: number) => {
     setTimeout(async () => {
         deleteGroup(message.channel.id);
         
-        let members = message.member?.voice?.channel?.members?.array();
+        let members = voiceChannel?.members?.array();
         let usersToPing: string = "";
         
         members?.forEach(member => {

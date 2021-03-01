@@ -1,4 +1,4 @@
-import { Channel, Client, TextChannel } from 'discord.js';
+import { Client } from 'discord.js';
 import mongoose from 'mongoose';
 import { updateDatabase } from './command/pomodoro/Pomodoro';
 import { mongoUrl, userWorking } from './constants';

@@ -19,9 +19,21 @@ Case 3 is rare. You can check for case 1 and 2 by running the command c: product
 
 
 # Latest Feature:<br />
-Start a pomodoro timer with a break! You're limited to a 5 - 30 minute break. Calcifer will automatically set the timer to 5 minutes if the timer you specify is not within this range. You can also `c: cancel` a break just like canceling a work session. 
+Start a group pomodoro!
 
-`c: pom [time] break [time]`<br />
+```c: group [time]```
+
+### Get Started With Group Pomodoros:
+1. Create a separate text channel whose channel name contains the word 'group'
+2. Create a separate voice channel whose channel name contains the word 'group'
+3. Connect to the voice channel
+4. Type `c: group [time]` in the text channel
+
+### Rules for starting a Group Pomodoro
+1. Must have a separate text channel that contains the word 'group' 
+2. Must have a voice channel that contains the word 'group'
+3. Must be connected to the voice channel that contains the word 'group'
+4. A Group Pomodoro must not already be in progress
 
 # All Commands:<br />
 `c: pomodoro`<br />
@@ -29,6 +41,7 @@ Start a pomodoro timer with a break! You're limited to a 5 - 30 minute break. Ca
 `c: pom`<br />
 `c: pom pom`<br />
 `c: pom [time] break [time]`<br />
+`c: group [time]`<br />
 `c: cancel`<br />
 `c: productivity`<br />
 `c: help`<br />
@@ -43,8 +56,9 @@ Start a Pomodoro Timer
 `c: pomodoro [time]` start a [time] minute timer || time must be within 10 - 120<br />
 `c: pom` start a 25 minute timerbr />
 `c: pom [time]` start an x minute timer <br />
-`c: pom pom`<br />
-`c: pom [time] break [time]` start a pomodoro with breaks <br />
+`c: pom pom`<br /> start a 50 minutes timer
+`c: pom [time] break [time]`<br /> start an x minute timer and y minute break
+`c: group [time]`<br /> start a group timer with friends!
 `c: cancel` cancel your work timer or break timer <br />
 
 ### 📊 Productivity

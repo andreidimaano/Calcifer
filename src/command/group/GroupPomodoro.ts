@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { deleteGroupCanceledPomodoro, isCanceledGroup } from "../../database/resolvers/GroupCanceledResolver";
 import { createGroup, deleteGroup } from "../../database/resolvers/GroupPomodoroResolver";
 import { updateDatabase } from "../pomodoro/Pomodoro";
 import { startEmbed } from "../pomodoro/PomodoroEmbed";
@@ -24,23 +25,28 @@ export let GroupPomodoro = async (message: Message, workTime?: number) => {
     await message.channel.send(`${firstUsersToPing}, ${errorMessage}`, startEmbed(workTimer));
 
     setTimeout(async () => {
-        deleteGroup(message.channel.id);
-        
-        let members = voiceChannel?.members?.array();
-        let usersToPing: string = "";
-        
-        members?.forEach(member => {
-            usersToPing = usersToPing.concat(`${member.user.toString()} `);
-            updateDatabase(
-                guildId!,
-                member.user.id,
-                member.user.tag,
-                workTimer
-            )
-        })
+        let canceledGroup = await isCanceledGroup(channelId);
+        if(!canceledGroup) {
+            deleteGroup(message.channel.id);
+            
+            let members = voiceChannel?.members?.array();
+            let usersToPing: string = "";
+            
+            members?.forEach(member => {
+                usersToPing = usersToPing.concat(`${member.user.toString()} `);
+                updateDatabase(
+                    guildId!,
+                    member.user.id,
+                    member.user.tag,
+                    workTimer
+                )
+            })
 
-        await message.channel.send(usersToPing, endGroupEmbed);
-
+            await message.channel.send(usersToPing, endGroupEmbed);
+        } else {
+            console.log('Group was canceled');
+            await deleteGroupCanceledPomodoro(channelId);
+        }
     }, 60000 * workTimer );
     
 }

@@ -1,4 +1,5 @@
 import { Message } from 'discord.js'
+import { CancelGroup } from '../command/cancel/CancelGroup';
 import { CancelPomodoro } from '../command/cancel/CancelPomodoro';
 import { Cook } from '../command/cook/Cook';
 import { Default } from '../command/default/Default';
@@ -16,6 +17,7 @@ export interface Arguments {
     command: string | undefined;
     workTime?: number;
     breakTime?: number;
+    isGroup?: boolean;
 }
 
 export const onMessage = async (message: Message ) : Promise<void> => {
@@ -55,7 +57,7 @@ let executeCommand = async (message: Message, args: Arguments) => {
             break;
         }
         case ('cancel'): {
-            await CancelPomodoro(message);
+            (args.isGroup) ? await CancelGroup(message) : await CancelPomodoro(message);
             break;
         }
         case ('productivity'): {

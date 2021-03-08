@@ -22,7 +22,7 @@ export const onMessage = async (message: Message ) : Promise<void> => {
     if (!message.guild) return;
     if (message.author.bot) return;
     if(!canHandleMessage(message)) return;
-    let args = parseArguments(message.content);
+    let args = parseArguments(message.content.toLowerCase());
 
     try {
         await executeCommand(message, args);
@@ -125,7 +125,7 @@ let canStartPomodoro = async (message: Message) => {
 
 
 let canHandleMessage = (message: Message) : boolean => {
-    return (!message.author.bot && message.content.startsWith(prefix));
+    return (!message.author.bot && message.content.toLowerCase().startsWith(prefix));
 }
 
 

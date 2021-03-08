@@ -13,4 +13,48 @@ I forgot to take into account user behavior for group poms. I created macros `c:
 
 Breaking down the structure of the parser function, we see that for `c: group pom`, the array becomes `["group", "pom"]`. arg[1] is now 'pom' which sets the work time to 50.
 
+We can instead break down the pom into different states and then reduce the states based on similarities.
 
+Current States:
+- c: pom
+- c: pom pom
+- c: pom 20
+- c: pom 20 break 20
+- c: group 20
+- c: group pom
+- c: group pom pom
+- c: help
+- c: cook
+- c: cancel
+- c: productivity
+
+We can group the states based on output:
+
+just commands:
+- c: pom
+- c: help
+- c: cook
+- c: cancel
+- c: productivity
+
+timers 1:
+- c: pom 20 break 20
+
+timers 2:
+- c: group pom
+
+timers 3:
+- c: pom 20
+- c: group 20
+
+timers 4:
+- c: group pom pom
+- c: pom pom
+
+
+timers 1 and 2 are edge cases. timers 3 and 4 group outputs based on whether we parseInt or if we manually set workTime.
+
+
+
+
+We know that the first element of the array will be the command.

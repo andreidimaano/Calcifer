@@ -39,13 +39,7 @@ let executeCommand = async (message: Message, args: Arguments) => {
     console.log(`author: ${message.author.tag}`);
     console.log('args: ', args);
     switch(args.command) {
-        case ('pom'): {
-            let validPomodoro = await canStartPomodoro(message);
-            if(validPomodoro) {
-                (!args.workTime)? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
-            }
-            break;
-        }
+        case ('pom'):
         case ('pomodoro'): {
             let validPomodoro = await canStartPomodoro(message);
             if(validPomodoro) {

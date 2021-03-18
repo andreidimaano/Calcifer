@@ -4,7 +4,7 @@ import { Arguments } from "./MessageInvoker";
 export let parseArguments = (messageContent: string) : Arguments => {
     //remove command prefix
     let content = messageContent.slice(prefix.length);
-    let args = content.split(' ').filter((argument) =>  argument.length > 0 ); 
+    let args = content.split(' ').filter((argument) => argument.length > 0 ); 
     let workTime = 0, breakTime = 0;
     let command = args[0].toLowerCase();
     let isGroup = false;

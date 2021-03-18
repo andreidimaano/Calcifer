@@ -30,25 +30,27 @@ const main = async () => {
         })
         console.log(`Logged in as ${client.user?.tag}!`);
         
-        await deleteAllGroups();        
+        if(!(client.user?.tag === "SpongeBob#9136")){
+            await deleteAllGroups();        
 
-        let membersWorking = await UserWorkingModel.find({});
-        
-        membersWorking.forEach((user) => {
-            if((user as userWorking).guildId){
-                console.log(user);
-                updateDatabase(
-                    (user as userWorking).guildId, 
-                    (user as userWorking).discordId, 
-                    (user as userWorking).discordTag, 
-                    (user as userWorking).minutes
-                );
-                deleteUserWorking((user as userWorking).discordId);
-            }
-        })
-        
-        await deleteAllCanceled();
-        await deleteUsersOnBreak();
+            let membersWorking = await UserWorkingModel.find({});
+            
+            membersWorking.forEach((user) => {
+                if((user as userWorking).guildId){
+                    console.log(user);
+                    updateDatabase(
+                        (user as userWorking).guildId, 
+                        (user as userWorking).discordId, 
+                        (user as userWorking).discordTag, 
+                        (user as userWorking).minutes
+                    );
+                    deleteUserWorking((user as userWorking).discordId);
+                }
+            })
+            
+            await deleteAllCanceled();
+            await deleteUsersOnBreak();
+        }
     })
     
     client.on('message', async (message) => {

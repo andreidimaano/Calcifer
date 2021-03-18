@@ -26,6 +26,22 @@ export let groupExists = async (channelId: string) => {
     }
 }
 
+export let isAuthor = async (authorId: string) => {
+    try {
+        return await GroupPomodoroModel.exists({authorId: authorId});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export let getAuthor = async (channelId: string) => {
+    try {
+        return await GroupPomodoroModel.findOne({channelId: channelId}).lean().exec();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 //delete
 export let deleteGroup = async (channelId: string) => {
     try {

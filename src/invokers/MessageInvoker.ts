@@ -1,4 +1,5 @@
 import { Message } from 'discord.js'
+import { CancelGroup } from '../command/cancel/CancelGroup';
 import { CancelPomodoro } from '../command/cancel/CancelPomodoro';
 import { Cook } from '../command/cook/Cook';
 import { Default } from '../command/default/Default';
@@ -16,13 +17,14 @@ export interface Arguments {
     command: string | undefined;
     workTime?: number;
     breakTime?: number;
+    isGroup?: boolean;
 }
 
 export const onMessage = async (message: Message ) : Promise<void> => {
     if (!message.guild) return;
     if (message.author.bot) return;
     if(!canHandleMessage(message)) return;
-    let args = parseArguments(message.content);
+    let args = parseArguments(message.content.toLowerCase());
 
     try {
         await executeCommand(message, args);
@@ -39,13 +41,7 @@ let executeCommand = async (message: Message, args: Arguments) => {
     console.log(`author: ${message.author.tag}`);
     console.log('args: ', args);
     switch(args.command) {
-        case ('pom'): {
-            let validPomodoro = await canStartPomodoro(message);
-            if(validPomodoro) {
-                (!args.workTime)? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
-            }
-            break;
-        }
+        case ('pom'):
         case ('pomodoro'): {
             let validPomodoro = await canStartPomodoro(message);
             if(validPomodoro) {
@@ -61,7 +57,7 @@ let executeCommand = async (message: Message, args: Arguments) => {
             break;
         }
         case ('cancel'): {
-            await CancelPomodoro(message);
+            (args.isGroup) ? await CancelGroup(message) : await CancelPomodoro(message);
             break;
         }
         case ('productivity'): {
@@ -125,7 +121,7 @@ let canStartPomodoro = async (message: Message) => {
 
 
 let canHandleMessage = (message: Message) : boolean => {
-    return (!message.author.bot && message.content.startsWith(prefix));
+    return (!message.author.bot && message.content.toLowerCase().startsWith(prefix));
 }
 
 

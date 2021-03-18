@@ -10,8 +10,6 @@ export let CancelPomodoro = async (message: Message) : Promise<void> => {
 
     if(currentlyOnBreak) {
         await deleteUserOnBreak(message.author.id);
-        // removeMember(currentMembersOnBreak, message.author.tag);
-        // canceledBreakMembers.push(message.author.tag);
         await createUserCanceled(message.author.id, message.author.tag, false);
         await message.reply(
             'Break Canceled'
@@ -24,8 +22,6 @@ export let CancelPomodoro = async (message: Message) : Promise<void> => {
         return;
     } else if(currentlyWorking){
         await deleteUserWorking(message.author.id);
-        // removeMember(currentMembersWorking, message.author.tag);
-        // canceledPomodoroMembers.push(message.author.tag);
         await createUserCanceled(message.author.id, message.author.tag, true);
         await message.reply(
             'Pomodoro Canceled'

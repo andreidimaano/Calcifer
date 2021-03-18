@@ -11,27 +11,14 @@ export let Help = async (message: Message) : Promise<void> => {
 let helpEmbed = new MessageEmbed()
     .setColor('#dc2f02')
     .setTitle('Commands')
-    .setDescription('Here is the list of commands available')
     .setURL('https://github.com/andreidimaano/Calcifer')
-    .setFooter('Contact Andrei Dimaano (aka shaquilleoneil)')
+    .setFooter('Contact Andrei Dimaano (aka shaquilleoatmeal)')
     .setTimestamp()
     .addFields(
-        { name: 'c: help', value: 'lists commands'},
-        { name: '\u200B', value: '\u200B' },
-        { name: 'c: pomodoro', value: 'start 25 minute pomodoro timer'},
-        { name: '\u200B', value: '\u200B' },
-        { name: 'c: pomodoro [number]', value: 'start [number from 10 to 120] minute pomodoro timer'},
-        { name: '\u200B', value: '\u200B' },
-        { name: 'c: pom pom', value: 'start 50 minute pomodoro timer'},
-        { name: '\u200B', value: '\u200B' },
-        { name: 'c: pom', value: 'start 25 minute pomodoro timer'},
-        { name: '\u200B', value: '\u200B' },
+        { name: 'c: pom [number]', value: 'start an x minute pomodoro timer'},
         { name: 'c: pom [number] break [number]', value: 'start an x minute pomodoro timer and y minute break timer'},
-        { name: '\u200B', value: '\u200B' },
+        { name: 'c: group [number] ', value: 'start an x minute group pomodoro timer '},
         { name: 'c: cancel', value: 'cancel your pomodoro timer'},
-        { name: '\u200B', value: '\u200B' },
+        { name: 'c: cancel group', value: 'cancel your group timer (must be author)'},
         { name: 'c: productivity', value: 'check your working stats!'},
-        { name: '\u200B', value: '\u200B' },
-        { name: 'c: cook', value: 'for the memes'},
-        { name: '\u200B', value: '\u200B' },
     )

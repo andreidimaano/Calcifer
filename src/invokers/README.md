@@ -30,31 +30,8 @@ Current States:
 
 We can group the states based on output:
 
-just commands:
-- c: pom
-- c: help
-- c: cook
-- c: cancel
-- c: productivity
-
-timers 1:
-- c: pom 20 break 20
-
-timers 2:
-- c: group pom
-
-timers 3:
-- c: pom 20
-- c: group 20
-
-timers 4:
-- c: group pom pom
-- c: pom pom
-
+| just commands: | timers 1: | timers 2: | timers 3: | timers 4:
+| --- | --- | --- | --- | --- |
+| `c: pom` </br> `c: help` </br> `c: cook` </br> `c: cancel` </br> `c: productivity` | `c: pom 20 break 20` | `c: group pom` | `c: pom 20` </br> `c: group 20` | `c: group pom pom` </br> `c: pom pom` |
 
 timers 1 and 2 are edge cases. timers 3 and 4 group outputs based on whether we parseInt or if we manually set workTime.
-
-
-
-
-We know that the first element of the array will be the command.

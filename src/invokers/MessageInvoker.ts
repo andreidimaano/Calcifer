@@ -8,6 +8,7 @@ import { Help } from '../command/help/help';
 import { Pomodoro } from '../command/pomodoro/Pomodoro'
 import { Productivity } from '../command/productivity/productivity';
 import { prefix } from '../constants';
+import { isGroupBreak } from '../database/resolvers/GroupBreakResolver';
 import { groupExists } from '../database/resolvers/GroupPomodoroResolver';
 import { isOnBreak } from '../database/resolvers/UserOnBreakResolver';
 import { isWorking } from '../database/resolvers/UserStudyingResolver';
@@ -52,7 +53,7 @@ let executeCommand = async (message: Message, args: Arguments) => {
         case 'group' : {
             let validGroupPomodoro = await canStartGroup(message);
             if(validGroupPomodoro) {
-                await GroupPomodoro(message, args.workTime);
+                await GroupPomodoro(message, args.workTime, args.workTime);
             }
             break;
         }
@@ -85,10 +86,14 @@ let canStartGroup = async (message: Message) => {
     //check if groupPomodoro already exists in database
     let channelId = message.channel.id;
     let groupPomInProgress = await groupExists(channelId);
+    let groupBreakInProgress = await isGroupBreak(channelId);
     if(groupPomInProgress) {
         await message.reply('Group Pomdoro in Progress');
         return false;
-     } else if(connected === null) {
+     } else if (groupBreakInProgress) {
+        await message.reply('Group Break in Progress');
+        return false;
+    }else if(connected === null) {
         await message.reply('You are not connected to a voice channel');
         return false;
     } else if (!message.member?.voice?.channel?.name.includes('group')) {

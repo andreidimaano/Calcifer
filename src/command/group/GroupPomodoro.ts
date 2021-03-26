@@ -4,7 +4,6 @@ import { deleteGroupCanceledBreak, deleteGroupCanceledPomodoro, isCanceledGroup,
 import { createGroup, deleteGroup } from "../../database/resolvers/GroupPomodoroResolver";
 import { endBreakEmbed, startBreakEmbed } from "../pomodoro/BreakEmbed";
 import { updateDatabase } from "../pomodoro/Pomodoro";
-import { startEmbed } from "../pomodoro/PomodoroEmbed";
 import { endGroupEmbed, startGroupEmbed } from "./GroupPomodoroEmbed";
 
 export let GroupPomodoro = async (message: Message, workTime?: number, breakTime?: number) => {
@@ -67,13 +66,13 @@ export let GroupPomodoro = async (message: Message, workTime?: number, breakTime
                         await deleteGroupCanceledBreak(channelId);
                     }
                     
-                }, /*60000*/ 1000 * breakTime!);
+                }, 60000 * breakTime!);
             }
         } else {
             console.log('Group was canceled');
             await deleteGroupCanceledPomodoro(channelId);
         }
-    }, /*60000*/ 1000 * workTimer );
+    }, 60000 * workTimer );
     
 }
 

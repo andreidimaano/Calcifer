@@ -43,13 +43,13 @@ export let Pomodoro = async ( message: Message, workTime?: number, breakTime?: n
                         await deleteUserCanceledBreak(authorId);
                     }
                     
-                }, 60000 /*1000*/ * breakTimer!);
+                }, 60000 * breakTimer!);
             }
         } else {
             console.log('Pomodoro was canceled');
             await deleteUserCanceledPomodoro(authorId);
         }
-    }, 60000 /*1000*/ * workTimer); 
+    }, 60000 * workTimer); 
 }
 
 export let errorCheck = (workTime?: number, breakTime?: number) => {

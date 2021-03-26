@@ -54,19 +54,30 @@ const main = async () => {
     })
     
     client.on('message', async (message) => {
-        if(message.author.bot) return;
+        try {
+            if(message.author.bot) return;
 
-        //for servers that already have my bot
-        let guildExists = await GuildModel.exists({guildId: message?.guild?.id});
-        if(!guildExists) {
-            await createGuild(message.guild!);
+            //for servers that already have my bot
+            // let guildExists = await GuildModel.exists({guildId: message?.guild?.id});
+            // if(!guildExists) {
+            //     await createGuild(message.guild!);
+            // }
+
+            await onMessage(message);
+        } catch (error) {
+            console.log(error);
         }
-
-        await onMessage(message);
     })
     
     client.on('guildCreate', async (guildData) => {
-        await createGuild(guildData);
+        try {
+            let guildExists = await GuildModel.exists({guildId: guildData.id});
+            if(!guildExists) {
+                await createGuild(guildData);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     })
 
     client.on('guildMemberRemove', async (guildMember) => {
@@ -75,12 +86,6 @@ const main = async () => {
 
     client.on('guildMemberAdd', async (guildMember) => {
         await updateGuild(guildMember.guild);
-    })
-
-    client.on('messageReactionAdd', (messageReaction, user) => {
-        // console.log(`Message: ${messageReaction.message.id}`);
-        // console.log(`Emoji: ${messageReaction.emoji}`);
-        // console.log(user.tag);
     })
 }
 

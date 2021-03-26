@@ -67,13 +67,13 @@ export let GroupPomodoro = async (message: Message, workTime?: number, breakTime
                         await deleteGroupCanceledBreak(channelId);
                     }
                     
-                }, 60000 * breakTime!);
+                }, /*60000*/ 1000 * breakTime!);
             }
         } else {
             console.log('Group was canceled');
             await deleteGroupCanceledPomodoro(channelId);
         }
-    }, 60000 * workTimer );
+    }, /*60000*/ 1000 * workTimer );
     
 }
 

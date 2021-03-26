@@ -53,7 +53,7 @@ let executeCommand = async (message: Message, args: Arguments) => {
         case 'group' : {
             let validGroupPomodoro = await canStartGroup(message);
             if(validGroupPomodoro) {
-                await GroupPomodoro(message, args.workTime, args.workTime);
+                await GroupPomodoro(message, args.workTime, args.breakTime);
             }
             break;
         }

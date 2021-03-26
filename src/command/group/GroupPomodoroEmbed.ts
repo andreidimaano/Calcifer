@@ -6,7 +6,7 @@ export let startGroupEmbed = (time: number) => {
     .setTitle('Pomodoro')
     .setTimestamp(Date.now())
     .addFields(
-        { name: `:tomato: Timer is set to ${time} minutes :tomato:`, value: ':blush: Happy Working Titans! :blush:'},
+        { name: `:tomato: Group Timer is set to ${time} minutes :tomato:`, value: ':blush: Happy Working Titans! :blush:'},
     )
 }
 
@@ -15,5 +15,5 @@ export let endGroupEmbed = new MessageEmbed()
     .setTitle('Pomodoro')
     .setTimestamp()
     .addFields(
-        { name: `:tomato: Congrats on finishing a pomodoro session :tomato:`, value: ':blush: enjoy your breaks! :blush:' }
+        { name: `:tomato: Congrats on finishing a Group pomodoro session :tomato:`, value: ':blush: enjoy your breaks! :blush:' }
     )

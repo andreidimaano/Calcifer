@@ -1,3 +1,4 @@
+import { GroupCancelBreakModel } from '../models/GroupCancelBreak';
 import { GroupCancelWorkingModel } from '../models/GroupCanceledWorking';
 
 //create
@@ -10,6 +11,13 @@ export let createGroupCanceled = async (guildId: string, channelId: string, isWo
             });
     
             await newGroupCanceledWorking.save();
+        } else {
+            let newGroupCanceledBreak = new GroupCancelBreakModel({
+                guildId: guildId,
+                channelId: channelId
+            });
+    
+            await newGroupCanceledBreak.save();
         }
     } catch (error) {
         console.log(error);
@@ -25,9 +33,9 @@ export let isCanceledGroup = async (channelId: string) => {
     }
 }
 
-export let deleteAllCanceledGroup = async () => {
+export let isCanceledGroupBreak = async (channelId: string) => {
     try {
-        await GroupCancelWorkingModel.deleteMany({});
+        return await GroupCancelBreakModel.exists({channelId: channelId});
     } catch (error) {
         console.log(error);
     }
@@ -44,3 +52,21 @@ export let deleteGroupCanceledPomodoro = async (channelId: string) => {
     }
 }
 
+export let deleteGroupCanceledBreak = async (channelId: string) => {
+    try {
+        await GroupCancelBreakModel.deleteOne({
+            channelId: channelId
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export let deleteAllCanceledGroup = async () => {
+    try {
+        await GroupCancelWorkingModel.deleteMany({});
+        await GroupCancelBreakModel.deleteMany({});
+    } catch (error) {
+        console.log(error);
+    }
+}

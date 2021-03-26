@@ -1,3 +1,5 @@
+import { GroupCancelBreakModel } from '../models/GroupCancelBreak';
+import { GroupCancelWorkingModel } from '../models/GroupCanceledWorking';
 import { UserCancelBreakModel } from '../models/UserCanceledBreak';
 import { UserCancelWorkingModel } from '../models/UserCanceledWorking'
 
@@ -66,6 +68,8 @@ export let deleteAllCanceled = async () => {
     try {
         await UserCancelBreakModel.deleteMany({});
         await UserCancelWorkingModel.deleteMany({});
+        await GroupCancelWorkingModel.deleteMany({});
+        await GroupCancelBreakModel.deleteMany({});
     } catch (error) {
         console.log(error);
     }

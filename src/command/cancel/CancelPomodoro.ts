@@ -7,7 +7,6 @@ export let CancelPomodoro = async (message: Message) : Promise<void> => {
     let currentlyWorking = await isWorking(message.author.id);
     let currentlyOnBreak = await isOnBreak(message.author.id);
 
-
     if(currentlyOnBreak) {
         await deleteUserOnBreak(message.author.id);
         await createUserCanceled(message.author.id, message.author.tag, false);

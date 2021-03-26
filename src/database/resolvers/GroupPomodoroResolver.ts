@@ -45,8 +45,8 @@ export let getAuthor = async (channelId: string) => {
 //delete
 export let deleteGroup = async (channelId: string) => {
     try {
-        await GroupPomodoroModel.deleteOne({
-            channelId: channelId,
+        await GroupPomodoroModel.deleteMany({
+            channelId: channelId
         })
     } catch (error) {
         console.log(error);

@@ -4,7 +4,6 @@ import { deleteGroupCanceledBreak, deleteGroupCanceledPomodoro, isCanceledGroup,
 import { createGroup, deleteGroup } from "../../database/resolvers/GroupPomodoroResolver";
 import { endBreakEmbed, startBreakEmbed } from "../pomodoro/BreakEmbed";
 import { updateDatabase } from "../pomodoro/Pomodoro";
-import { startEmbed } from "../pomodoro/PomodoroEmbed";
 import { endGroupEmbed, startGroupEmbed } from "./GroupPomodoroEmbed";
 
 export let GroupPomodoro = async (message: Message, workTime?: number, breakTime?: number) => {

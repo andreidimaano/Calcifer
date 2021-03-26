@@ -30,6 +30,13 @@ export let parseArguments = (messageContent: string) : Arguments => {
         }
     }
 
+    if(args[0].toLowerCase() === "group" && args[1].toLowerCase() === "cancel") {
+        command = "cancel";
+        workTime = 0;
+        breakTime = 0;
+        isGroup = true;
+    }
+
     return {
         command: command,
         workTime: workTime,

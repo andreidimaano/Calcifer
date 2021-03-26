@@ -18,6 +18,7 @@ let helpEmbed = new MessageEmbed()
         { name: 'c: pom [number]', value: 'start an x minute pomodoro timer'},
         { name: 'c: pom [number] break [number]', value: 'start an x minute pomodoro timer and y minute break timer'},
         { name: 'c: group [number] ', value: 'start an x minute group pomodoro timer '},
+        { name: 'c: group [number] break [number]', value: 'start group pomodoro with break'},
         { name: 'c: cancel', value: 'cancel your pomodoro timer'},
         { name: 'c: cancel group', value: 'cancel your group timer (must be author)'},
         { name: 'c: productivity', value: 'check your working stats!'},

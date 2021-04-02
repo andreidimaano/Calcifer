@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { DiscordUserData } from "../../types";
+import { DiscordUserData, UserDoc } from "../../types";
 import { UserSchema } from "../models/User";
+import {Model} from 'mongoose';
 
 //create
 export let createUser = async (userData: DiscordUserData, minutesStudied: number) => {
@@ -54,6 +55,20 @@ export let userExists = async (userData: DiscordUserData) => {
     try {
         let User = mongoose.model((userData.guildId + 'users').toLowerCase(), UserSchema);
         return await User.exists({discordId: userData.discordId})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export let getUserMinutes = async() => {
+    try {
+        let UserModel: Model<UserDoc> = mongoose.model(('serverusers').toLowerCase(), UserSchema);
+        let user: Array<UserDoc> = await UserModel.find({});
+        user.sort((a, b) => (a.minutesStudied > b.minutesStudied)? -1 : 1);
+        user.splice(11, user.length - 11);
+        for(let i = 0; i < user.length; i++) {
+            console.log(i, user[i]);
+        }
     } catch (error) {
         console.log(error);
     }

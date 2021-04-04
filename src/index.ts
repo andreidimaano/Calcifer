@@ -8,7 +8,6 @@ import { deleteAllGroups } from './database/resolvers/GroupPomodoroResolver';
 import { createGuild, updateGuild } from './database/resolvers/GuildResolver';
 import { deleteAllCanceled } from './database/resolvers/UserCanceledResolver';
 import { deleteUsersOnBreak } from './database/resolvers/UserOnBreakResolver';
-import { getUserMinutes, getUserMinutesStudied } from './database/resolvers/UserResolver';
 import { deleteUserWorking } from './database/resolvers/UserStudyingResolver';
 import { onMessage } from './invokers/MessageInvoker';
 require('dotenv').config();
@@ -22,7 +21,7 @@ const main = async () => {
         useCreateIndex: true
     });
 
-    client.login(process.env.TESTTOKEN);
+    client.login(process.env.DISCORDTOKEN);
 
     client.on('ready', async () => {
         await client.user?.setActivity({
@@ -52,22 +51,11 @@ const main = async () => {
             await deleteAllCanceled();
             await deleteUsersOnBreak();
         }
-
-        if(client.user?.tag === "SpongeBob#9136") {
-            getUserMinutes();
-        }
     })
     
     client.on('message', async (message) => {
         try {
             if(message.author.bot) return;
-
-            //for servers that already have my bot
-            // let guildExists = await GuildModel.exists({guildId: message?.guild?.id});
-            // if(!guildExists) {
-            //     await createGuild(message.guild!);
-            // }
-
             await onMessage(message);
         } catch (error) {
             console.log(error);

@@ -22,7 +22,7 @@ let productivityMessage = (minutesStudied: string): string => {
     return `\`\`\`Total Focused Time: ${minutesStudied}\`\`\``;
 }
 
-let minutesToHours = (totalMinutes: number): string => {
+export let minutesToHours = (totalMinutes: number): string => {
     let hours = Math.floor(totalMinutes / 60);          
     let minutes = totalMinutes % 60;
     let hourSingularOrPlural = (hours === 1) ? 'hour' : 'hours';

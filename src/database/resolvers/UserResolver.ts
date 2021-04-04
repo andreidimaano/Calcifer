@@ -59,17 +59,3 @@ export let userExists = async (userData: DiscordUserData) => {
         console.log(error);
     }
 }
-
-export let getUserMinutes = async() => {
-    try {
-        let UserModel: Model<UserDoc> = mongoose.model(('serverusers').toLowerCase(), UserSchema);
-        let user: Array<UserDoc> = await UserModel.find({});
-        user.sort((a, b) => (a.minutesStudied > b.minutesStudied)? -1 : 1);
-        user.splice(11, user.length - 11);
-        for(let i = 0; i < user.length; i++) {
-            console.log(i, user[i]);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}

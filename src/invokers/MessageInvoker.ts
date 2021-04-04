@@ -1,4 +1,5 @@
 import { Message } from 'discord.js'
+import { allTime } from '../command/alltime/alltime';
 import { CancelGroup } from '../command/cancel/CancelGroup';
 import { CancelPomodoro } from '../command/cancel/CancelPomodoro';
 import { Cook } from '../command/cook/Cook';
@@ -48,6 +49,10 @@ let executeCommand = async (message: Message, args: Arguments) => {
             if(validPomodoro) {
                 (!args.workTime)? await Pomodoro(message, 25) : await Pomodoro(message, args.workTime, args.breakTime);
             }
+            break;
+        }
+        case 'alltime' : {
+            await allTime(message);
             break;
         }
         case 'group' : {

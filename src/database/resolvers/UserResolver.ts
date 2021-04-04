@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { DiscordUserData } from "../../types";
+import { DiscordUserData, UserDoc } from "../../types";
 import { UserSchema } from "../models/User";
+import {Model} from 'mongoose';
 
 //create
 export let createUser = async (userData: DiscordUserData, minutesStudied: number) => {

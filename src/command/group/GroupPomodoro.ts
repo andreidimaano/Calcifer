@@ -19,7 +19,9 @@ export let GroupPomodoro = async (message: Message, workTime?: number, breakTime
     let firstMembers = voiceChannel?.members?.array();
     let firstUsersToPing: string = "";
     firstMembers?.forEach(member => {
-        firstUsersToPing = firstUsersToPing.concat(`${member.user.toString()} `);
+        if(!member.user.bot) {
+            firstUsersToPing = firstUsersToPing.concat(`${member.user.toString()} `);
+        }
     })
 
     await createGroup(authorId, authorTag, guildId!, channelId, workTimer,);
@@ -55,7 +57,9 @@ export let GroupPomodoro = async (message: Message, workTime?: number, breakTime
                     let usersBreakToPing: string = "";
 
                     breakMembers?.forEach(member => {
-                        usersBreakToPing = usersBreakToPing.concat(`${member.user.toString()} `)
+                        if(!member.user.bot) {
+                            usersBreakToPing = usersBreakToPing.concat(`${member.user.toString()} `)
+                        }
                     })
 
                     if(!breakCanceled){

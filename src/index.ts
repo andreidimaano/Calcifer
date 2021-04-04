@@ -56,13 +56,6 @@ const main = async () => {
     client.on('message', async (message) => {
         try {
             if(message.author.bot) return;
-
-            //for servers that already have my bot
-            // let guildExists = await GuildModel.exists({guildId: message?.guild?.id});
-            // if(!guildExists) {
-            //     await createGuild(message.guild!);
-            // }
-
             await onMessage(message);
         } catch (error) {
             console.log(error);

@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/andreidimaano/Calcifer.git"
   },
-  "engines" : {
+  "engines": {
     "node": ">=16.6"
   },
   "keywords": [],
@@ -41,6 +41,7 @@
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
     "dotenv": "^8.2.0",
+    "libsodium-wrappers": "^0.7.9",
     "moment": "^2.29.1",
     "momentjs": "^2.0.0",
     "mongoose": "^5.11.9",

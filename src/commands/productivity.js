@@ -40,7 +40,7 @@ let intExe = async (interaction) => {
         timestamp: time(new Date(), "R"),
       },
     ],
-    ephermeral: true,
+    ephermeral: false
   });
 };
 

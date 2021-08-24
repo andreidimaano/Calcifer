@@ -101,6 +101,9 @@ let intExe = async (interaction, options) => {
     interaction.channelId
   );
 
+  console.log("voice: "); console.log(voice);
+  console.log("voice channel: "); console.log(voice.channel);
+
   await interaction.deferReply();
 
   // checks if you can start a group pomodoro
@@ -155,6 +158,7 @@ let intExe = async (interaction, options) => {
     content: `${firstUsersToPing} ${error.pom}${error.rest}`,
     embeds: [groupStartEmbed(work)],
     components: [groupStartRow],
+    ephemeral: false
   });
 
   setTimeout(async () => {
@@ -194,6 +198,8 @@ let intExe = async (interaction, options) => {
         } catch (error) {
           console.error(error);
         }
+      } else {
+        console.log("voice could not play")
       }
 
       if (rest) {
@@ -303,6 +309,8 @@ let mesExe = async (options) => {
         } catch (error) {
           console.error(error);
         }
+      } else {
+        console.log("voice could not play")
       }
 
       if (rest) {

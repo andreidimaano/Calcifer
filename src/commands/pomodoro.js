@@ -65,6 +65,7 @@ let intExe = async (interaction, options) => {
     content: `${user.toString()} ${options.error.pom}${options.error.rest}`,
     embeds: [pomStartEmbed(work)],
     components: [pomStartRow],
+    ephemeral: false
   });
 
   // goes above

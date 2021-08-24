@@ -22,7 +22,7 @@ const main = async () => {
     ],
   });
   setCommands(client);
-  client.login(process.env.DISCORDTOKEN);
+  await client.login(process.env.DISCORDTOKEN);
 
   client.once("ready", async () => {
     console.log("Ready!");

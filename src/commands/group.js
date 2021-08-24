@@ -45,7 +45,7 @@ const { updateDatabase } = require("../util/updateDatabase");
 const player = createAudioPlayer();
 
 function playSong() {
-  const resource = createAudioResource("./src2/util/YoScott.m4a", {
+  const resource = createAudioResource("./src/util/YoScott.m4a", {
     inputType: StreamType.Arbitrary,
   });
 

@@ -1,10 +1,17 @@
 // require the needed discord.js classes
 require("dotenv").config();
 const { Client, Intents } = require("discord.js");
-const { setCommands } = require("./util/setCommands");
 const mongoose = require("mongoose");
+
+const { setCommands } = require("./util/setCommands");
 const { handleMessage } = require("./util/handleMessage");
 const { canStartPomodoro, canStartGroup } = require("./util/canStart");
+const { GuildModel } = require("./database/models/DiscordGuild");
+const { deleteAllGroups } = require("./database/resolvers/GroupPomodoroResolver");
+const { createGuild, updateGuild } = require("./database/resolvers/GuildResolver");
+const { deleteAllCanceled } = require("./database/resolvers/UserCanceledResolver");
+const { deleteUsersOnBreak } = require("./database/resolvers/UserOnBreakResolver");
+const { deleteUserWorking } = require("./database/resolvers/UserWorking");
 
 const main = async () => {
   await mongoose.connect(process.env.MONGO_URL, {
@@ -30,6 +37,28 @@ const main = async () => {
       type: "LISTENING",
       name: "/pomodoro",
     });
+
+    if (!(client.user?.tag === "SpongeBob#9136")) {
+      await deleteAllGroups();
+
+      let membersWorking = await UserWorkingModel.find({});
+
+      membersWorking.forEach((user) => {
+        if (user.guildId) {
+          console.log(user);
+          updateDatabase(
+            user.guildId,
+            user.discordId,
+            user.discordTag,
+            user.minutes
+          );
+          deleteUserWorking(user.discordId);
+        }
+      });
+
+      await deleteAllCanceled();
+      await deleteUsersOnBreak();
+    }
   });
 
   client.on("interactionCreate", async (interaction) => {
@@ -128,6 +157,25 @@ const main = async () => {
     } catch (error) {
       console.log(error);
     }
+  });
+
+  client.on("guildCreate", async (guildData) => {
+    try {
+      let guildExists = await GuildModel.exists({ guildId: guildData.id });
+      if (!guildExists) {
+        await createGuild(guildData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  client.on("guildMemberRemove", async (guildMember) => {
+    await updateGuild(guildMember.guild);
+  });
+
+  client.on("guildMemberAdd", async (guildMember) => {
+    await updateGuild(guildMember.guild);
   });
 };
 

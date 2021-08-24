@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const { setCommands } = require("./util/setCommands");
 const { handleMessage } = require("./util/handleMessage");
 const { canStartPomodoro, canStartGroup } = require("./util/canStart");
-const { GuildModel } = require("./database/models/DiscordGuild");
+const { GuildModel } = require("./database/models/Guild");
 const { deleteAllGroups } = require("./database/resolvers/GroupPomodoroResolver");
 const { createGuild, updateGuild } = require("./database/resolvers/GuildResolver");
 const { deleteAllCanceled } = require("./database/resolvers/UserCanceledResolver");
@@ -29,7 +29,7 @@ const main = async () => {
     ],
   });
   setCommands(client);
-  await client.login(process.env.DISCORDTOKEN);
+  await client.login(process.env.TESTTOKEN);
 
   client.once("ready", async () => {
     console.log("Ready!");

@@ -77,8 +77,9 @@ const main = async () => {
     try {
       if (message.author.bot) return;
       let options = await handleMessage(message);
-      if(options === null);
-      options = {}
+      if(options === null) {
+        options = {};
+      }
       options.message = message;
       let { command } = options;
       let interaction = null;

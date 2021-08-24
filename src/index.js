@@ -7,6 +7,7 @@ const { setCommands } = require("./util/setCommands");
 const { handleMessage } = require("./util/handleMessage");
 const { canStartPomodoro, canStartGroup } = require("./util/canStart");
 const { GuildModel } = require("./database/models/Guild");
+const { UserWorkingModel } = require("./database/models/User");
 const { deleteAllGroups } = require("./database/resolvers/GroupPomodoroResolver");
 const { createGuild, updateGuild } = require("./database/resolvers/GuildResolver");
 const { deleteAllCanceled } = require("./database/resolvers/UserCanceledResolver");

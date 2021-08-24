@@ -29,7 +29,7 @@ const main = async () => {
     ],
   });
   setCommands(client);
-  await client.login(process.env.TESTTOKEN);
+  await client.login(process.env.DISCORDTOKEN);
 
   client.once("ready", async () => {
     console.log("Ready!");

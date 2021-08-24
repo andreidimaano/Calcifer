@@ -30,8 +30,6 @@ const main = async () => {
       type: "LISTENING",
       name: "/pomodoro",
     });
-
-    console.log(client.channels);
   });
 
   client.on("interactionCreate", async (interaction) => {

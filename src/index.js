@@ -154,6 +154,8 @@ const main = async () => {
           return;
         }
       }
+      
+      if(client.commands.get(command) === undefined) return;
 
       await client.commands.get(command).execute(interaction, options);
     } catch (error) {

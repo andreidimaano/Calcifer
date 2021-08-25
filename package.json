@@ -41,11 +41,13 @@
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
     "dotenv": "^8.2.0",
+    "ffmpeg": "^0.0.4",
     "libsodium-wrappers": "^0.7.9",
     "moment": "^2.29.1",
     "momentjs": "^2.0.0",
     "mongoose": "^5.11.9",
     "node-cron": "^3.0.0",
+    "opusscript": "^0.0.8",
     "prettier": "^2.3.2"
   }
 }

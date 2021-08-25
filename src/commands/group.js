@@ -7,6 +7,7 @@ const {
   StreamType,
   AudioPlayerStatus,
   VoiceConnectionStatus,
+  generateDependencyReport
 } = require("@discordjs/voice");
 const moment = require("moment");
 
@@ -188,7 +189,8 @@ let intExe = async (interaction, options) => {
       });
 
       // YO
-      if (voice.channelId) {
+      if (voice.channel) {
+        console.log(generateDependencyReport());
         let vc = voice.channel;
         try {
           await playSong();
@@ -299,7 +301,8 @@ let mesExe = async (options) => {
       });
 
       // YO
-      if (voice.channelId) {
+      if (voice.channel) {
+        console.log(generateDependencyReport());
         let vc = voice.channel;
         try {
           await playSong();
@@ -307,10 +310,11 @@ let mesExe = async (options) => {
           connection.subscribe(player);
           setTimeout(() => connection.destroy(), 4_000);
         } catch (error) {
+          console.log("\n\nvoice could not play - error: ")
           console.error(error);
         }
       } else {
-        console.log("voice could not play")
+        console.log("\n\nvoice could not play: channel ID not defined")
       }
 
       if (rest) {

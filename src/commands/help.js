@@ -58,7 +58,7 @@ let intExe = async (interaction, options) => {
     content: `${interaction.user.toString()} Fine, like moving the castle isn\'t hard enough!`,
     embeds: [helpEmbed],
     components: [helpRow],
-    ephemeral: false
+    ephemeral: false,
   });
 };
 

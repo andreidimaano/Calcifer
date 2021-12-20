@@ -14,7 +14,7 @@ let intExe = async (interaction) => {
         timestamp: time(new Date(), "R"),
       },
     ],
-    ephemeral: false
+    ephemeral: false,
   });
 };
 

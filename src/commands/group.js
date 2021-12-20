@@ -7,7 +7,7 @@ const {
   StreamType,
   AudioPlayerStatus,
   VoiceConnectionStatus,
-  generateDependencyReport
+  generateDependencyReport,
 } = require("@discordjs/voice");
 const moment = require("moment");
 
@@ -102,8 +102,10 @@ let intExe = async (interaction, options) => {
     interaction.channelId
   );
 
-  console.log("voice: "); console.log(voice);
-  console.log("voice channel: "); console.log(voice.channel);
+  console.log("voice: ");
+  console.log(voice);
+  console.log("voice channel: ");
+  console.log(voice.channel);
 
   await interaction.deferReply();
 
@@ -159,7 +161,7 @@ let intExe = async (interaction, options) => {
     content: `${firstUsersToPing} ${error.pom}${error.rest}`,
     embeds: [groupStartEmbed(work)],
     components: [groupStartRow],
-    ephemeral: false
+    ephemeral: false,
   });
 
   setTimeout(async () => {
@@ -201,7 +203,7 @@ let intExe = async (interaction, options) => {
           console.error(error);
         }
       } else {
-        console.log("voice could not play")
+        console.log("voice could not play");
       }
 
       if (rest) {
@@ -310,11 +312,11 @@ let mesExe = async (options) => {
           connection.subscribe(player);
           setTimeout(() => connection.destroy(), 4_000);
         } catch (error) {
-          console.log("\n\nvoice could not play - error: ")
+          console.log("\n\nvoice could not play - error: ");
           console.error(error);
         }
       } else {
-        console.log("\n\nvoice could not play: channel ID not defined")
+        console.log("\n\nvoice could not play: channel ID not defined");
       }
 
       if (rest) {

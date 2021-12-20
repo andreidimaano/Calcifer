@@ -8,12 +8,24 @@ const { handleMessage } = require("./util/handleMessage");
 const { canStartPomodoro, canStartGroup } = require("./util/canStart");
 const { GuildModel } = require("./database/models/Guild");
 const { UserWorkingModel } = require("./database/models/User");
-const { deleteAllGroups } = require("./database/resolvers/GroupPomodoroResolver");
-const { updateDatabase } = require("./util/updateDatabase")
-const { createGuild, updateGuild } = require("./database/resolvers/GuildResolver");
-const { deleteAllCanceled } = require("./database/resolvers/UserCanceledResolver");
-const { deleteUsersOnBreak } = require("./database/resolvers/UserOnBreakResolver");
+const {
+  deleteAllGroups,
+} = require("./database/resolvers/GroupPomodoroResolver");
+const { updateDatabase } = require("./util/updateDatabase");
+const {
+  createGuild,
+  updateGuild,
+} = require("./database/resolvers/GuildResolver");
+const {
+  deleteAllCanceled,
+} = require("./database/resolvers/UserCanceledResolver");
+const {
+  deleteUsersOnBreak,
+} = require("./database/resolvers/UserOnBreakResolver");
 const { deleteUserWorking } = require("./database/resolvers/UserWorking");
+const {
+  deleteGroupsBreak,
+} = require("./database/resolvers/GroupBreakResolver");
 
 const main = async () => {
   await mongoose.connect(process.env.MONGO_URL, {
@@ -60,6 +72,7 @@ const main = async () => {
 
       await deleteAllCanceled();
       await deleteUsersOnBreak();
+      await deleteGroupsBreak();
     }
   });
 
@@ -108,7 +121,7 @@ const main = async () => {
     try {
       if (message.author.bot) return;
       let options = await handleMessage(message);
-      if(options === null) {
+      if (options === null) {
         options = {};
       }
       options.message = message;
@@ -154,8 +167,8 @@ const main = async () => {
           return;
         }
       }
-      
-      if(client.commands.get(command) === undefined) return;
+
+      if (client.commands.get(command) === undefined) return;
 
       await client.commands.get(command).execute(interaction, options);
     } catch (error) {

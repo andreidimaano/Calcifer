@@ -1,5 +1,7 @@
+
 <h1> pls read: </h1>
-<p>
+<p> 
+ UPDATE 5/8/22: FINISHED MIGRATING HAVE FUN WITH THE BOT :D </br>
  I'm amazed at how many people have been using this bot. It's so crazy that this bot has gotten so big. I wrote this code about a year ago and it wasn't built to scale to what it is now. I've exceeded the limitations of my database design. I'll have to redo my database and transfer data. It'll take a while because I'm currently on vacation. When I come back, it'll be better than ever :D If you'd like to contribute, the bot is open source so feel free to put some changes in :)
  </p>
 

@@ -7,6 +7,7 @@ const {
   channelMention,
   roleMention,
 } = require("@discordjs/builders");
+const {readLeaderboard} = require('../database');
 
 let formatData = (users) => {
   let rank = "";
@@ -22,8 +23,9 @@ let formatData = (users) => {
     }
 
     const user = userMention(users[i].discordId);
+    const userTag = users[i].discordTag.slice(0, users[i].discordTag.length - 5)
 
-    rank += `${i > 2 ? n + "." : n} ${user} \n`;
+    rank += `${i > 2 ? n + "." : n} ${user} (${userTag})\n`;
 
     let time = formatDuration(users[i].minutesStudied);
     minutes += `${time} \n`;
@@ -32,12 +34,11 @@ let formatData = (users) => {
   return { rank, minutes };
 };
 
-let intExe = async (interaction) => {
+let intExe = async (interaction, supabase) => {
   let author = interaction.user;
   await interaction.deferReply();
 
-  let users = await getUserMinutes(interaction.guild.id);
-  // let users = await getUserMinutes("590298536713781258");
+  let users = await readLeaderboard(supabase, interaction.guild.id)
   let { rank, minutes } = formatData(users);
 
   await interaction.editReply({
@@ -57,8 +58,8 @@ let intExe = async (interaction) => {
   });
 };
 
-let mesExe = async (message) => {
-  let users = await getUserMinutes(message.guild.id);
+let mesExe = async (message, supabase) => {
+  let users = await readLeaderboard(supabase, message.guild.id)
   let { rank, minutes } = formatData(users);
 
   await message.reply({
@@ -81,11 +82,11 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("leaderboard")
     .setDescription("Top 10 Minutes Studied/Worked"),
-  async execute(interaction, options) {
+  async execute(interaction, options, supabase) {
     if (interaction !== null) {
-      intExe(interaction);
+      intExe(interaction, supabase);
     } else {
-      mesExe(options.message);
+      mesExe(options.message, supabase);
     }
   },
 };

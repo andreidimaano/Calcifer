@@ -1,6 +1,7 @@
 // require the needed discord.js classes
 require("dotenv").config();
 const { Client, Intents } = require("discord.js");
+const { createClient } = require("@supabase/supabase-js");
 const mongoose = require("mongoose");
 
 const { setCommands } = require("./util/setCommands");
@@ -26,6 +27,7 @@ const { deleteUserWorking } = require("./database/resolvers/UserWorking");
 const {
   deleteGroupsBreak,
 } = require("./database/resolvers/GroupBreakResolver");
+const pomodoro = require("./commands/pomodoro");
 
 const main = async () => {
   await mongoose.connect(process.env.MONGO_URL, {
@@ -34,6 +36,10 @@ const main = async () => {
     useFindAndModify: false,
     useCreateIndex: true,
   });
+
+  const supabaseUrl = "https://sgdnfnoervqwhowpfjif.supabase.co";
+  const supabaseKey = process.env.SUPABASE_KEY;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   const client = new Client({
     intents: [
@@ -86,14 +92,20 @@ const main = async () => {
             work: 25,
             rest: 0,
             error: { pom: "", rest: "" },
-          });
+          }, supabase);
         } else if (customId === "group") {
           await client.commands.get(customId).execute(interaction, {
             work: 25,
             rest: 0,
             error: { pom: "", rest: "" },
-          });
+          }, supabase);
+        } else if (customId === "leaderboard" || customId === "productivity"){
+          // requires database
+          await client.commands.get(customId).execute(interaction, null, supabase);
         } else {
+          // doesn't require database
+          // cancelgroup, cancelpom, cook, help
+          // use mongodb for canceling
           await client.commands.get(customId).execute(interaction);
         }
       }
@@ -103,7 +115,7 @@ const main = async () => {
         if (!client.commands.has(commandName)) return;
 
         try {
-          await client.commands.get(commandName).execute(interaction);
+          await client.commands.get(commandName).execute(interaction, null ,supabase);
         } catch (error) {
           console.error(error);
           return interaction.reply({
@@ -128,13 +140,19 @@ const main = async () => {
       let { command } = options;
       let interaction = null;
 
+      if(command === "productivity") {
+        console.log("here")
+        await client.commands.get(command).execute(interaction, options, supabase);
+        return;
+      }
+
       if (command === "group") {
         let validGroupPomodoro = await canStartGroup(message);
         if (validGroupPomodoro) {
           if (!options.work) {
             options.work = 25;
           }
-          await client.commands.get("group").execute(interaction, options);
+          await client.commands.get("group").execute(interaction, options, supabase);
         }
         return;
       }
@@ -145,7 +163,7 @@ const main = async () => {
           if (!options.work) {
             options.work = 25;
           }
-          await client.commands.get("pomodoro").execute(interaction, options);
+          await client.commands.get("pomodoro").execute(interaction, options, supabase);
         }
         return;
       }
@@ -154,7 +172,7 @@ const main = async () => {
         if (command === "alltime" || command === "leaderboards") {
           await client.commands
             .get("leaderboard")
-            .execute(interaction, options);
+            .execute(interaction, options, supabase);
           return;
         } else if (command === "cancel") {
           options.isGroup
@@ -169,7 +187,6 @@ const main = async () => {
       }
 
       if (client.commands.get(command) === undefined) return;
-
       await client.commands.get(command).execute(interaction, options);
     } catch (error) {
       console.log(error);

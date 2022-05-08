@@ -5,18 +5,19 @@ const fs = require("fs");
 
 const commands = [];
 const commandFiles = fs
-  .readdirSync("./src2/commands")
+  .readdirSync("./src/commands")
   .filter((file) => file.endsWith(".js"));
 
 // Place your client and guild ids here
-const clientId = "781277794826715176";
+// const clientId = "781277794826715176";
+const clientId = "692223953581768725";
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   commands.push(command.data.toJSON());
 }
 
-const rest = new REST({ version: "9" }).setToken(process.env.DISCORDTOKEN);
+const rest = new REST({ version: "9" }).setToken(process.env.TESTTOKEN);
 
 (async () => {
   try {

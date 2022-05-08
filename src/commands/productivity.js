@@ -1,27 +1,28 @@
 const { time, SlashCommandBuilder } = require("@discordjs/builders");
 const { formatDuration } = require("../util/minutesToHours");
-const {
-  getUserMinutesStudied,
-  userExists,
-} = require("../database/resolvers/UserResolver");
+// const {
+//   getUserMinutesStudied,
+//   userExists,
+// } = require("../database/resolvers/UserResolver");
+const {readUserMinutes, userExists} = require ('../database')
 
-let intExe = async (interaction) => {
+let intExe = async (interaction, supabase) => {
   let { user } = interaction;
   await interaction.deferReply({ ephermeral: true });
 
-  let userData = {
-    guildId: interaction.guild.id,
-    discordId: user.id,
-    discordTag: user.tag,
-  };
+  // let userData = {
+  //   guildId: interaction.guild.id,
+  //   discordId: user.id,
+  //   discordTag: user.tag,
+  // };
 
-  let isUser = await userExists(userData);
+  let isUser = await userExists(supabase, interaction.guild.id, user.id);
   let minutes = "";
 
   if (!isUser) {
     minutes = "0 minutes worked";
   } else {
-    let minutesStudied = await getUserMinutesStudied(userData);
+    let minutesStudied = await readUserMinutes(supabase, interaction.guild.id, user.id);
     minutes = formatDuration(minutesStudied);
   }
 
@@ -44,20 +45,20 @@ let intExe = async (interaction) => {
   });
 };
 
-let mesExe = async (message) => {
+let mesExe = async (message, supabase) => {
   let { author } = message;
-  let userData = {
-    guildId: message.guild.id,
-    discordId: message.author.id,
-    discordTag: message.author.tag,
-  };
+  // let userData = {
+  //   guildId: message.guild.id,
+  //   discordId: message.author.id,
+  //   discordTag: message.author.tag,
+  // };
 
-  let isUser = await userExists(userData);
+  let isUser = await userExists(supabase, message.guild.id, message.author.id);
   let minutes = "";
   if (!isUser) {
     minutes = "0 minutes worked";
   } else {
-    let minutesStudied = await getUserMinutesStudied(userData);
+    let minutesStudied = await readUserMinutes(supabase, message.guild.id, message.author.id);
     minutes = formatDuration(minutesStudied);
   }
 
@@ -83,11 +84,11 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("productivity")
     .setDescription("total minutes worked"),
-  async execute(interaction, options) {
+  async execute(interaction, options, supabase) {
     if (interaction !== null) {
-      intExe(interaction);
+      intExe(interaction, supabase);
     } else {
-      mesExe(options.message);
+      mesExe(options.message, supabase);
     }
   },
 };

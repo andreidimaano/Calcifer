@@ -33,9 +33,9 @@ const {
   endBreakRow,
 } = require("../embeds/PomEmbed");
 
-let intExe = async (interaction, options) => {
+let intExe = async (interaction, options, supabase) => {
   let { user, member, guildId } = interaction;
-  if (options === undefined) {
+  if (options === undefined || !options) {
     options = parseInteractionOptions(interaction.options._hoistedOptions);
   }
   let { work, rest } = options;
@@ -45,13 +45,15 @@ let intExe = async (interaction, options) => {
 
   let currentlyWorking = await isWorking(authorId);
   if (currentlyWorking) {
-    await interaction.editReply("```Error: You're already working!```");
+    await interaction.reply("```Error: You're already working!```");
     return;
   }
 
+  
   let currentlyOnBreak = await isOnBreak(authorId);
+  console.log(currentlyOnBreak);
   if (currentlyOnBreak) {
-    await interaction.editReply("```Error: You're on break!```");
+    await interaction.reply("```Error: You're on break!```");
     return;
   }
 
@@ -94,7 +96,7 @@ let intExe = async (interaction, options) => {
         components: [pomEndRow],
       });
       await deleteUserWorking(authorId);
-      updateDatabase(guildId, authorId, author, work);
+      updateDatabase(guildId, authorId, author, work, supabase);
 
       if (rest) {
         await channel.send({
@@ -125,7 +127,7 @@ let intExe = async (interaction, options) => {
   }, work * 60000);
 };
 
-let mesExe = async (options) => {
+let mesExe = async (options, supabase) => {
   let { message } = options;
   let user = message.author;
   let authorId = user.id;
@@ -164,7 +166,7 @@ let mesExe = async (options) => {
         components: [pomEndRow],
       });
       await deleteUserWorking(authorId);
-      updateDatabase(guildId, authorId, author, work);
+      updateDatabase(guildId, authorId, author, work, supabase);
 
       if (rest) {
         await channel.send({
@@ -211,11 +213,11 @@ module.exports = {
         .setDescription("the time in minutes you want to rest")
         .setRequired(false)
     ),
-  execute: async (interaction, options) => {
+  execute: async (interaction, options, supabase = undefined) => {
     if (interaction !== null) {
-      intExe(interaction, options);
+      intExe(interaction, options, supabase);
     } else {
-      mesExe(options);
+      mesExe(options, supabase);
     }
   },
 };

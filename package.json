@@ -37,6 +37,7 @@
     "@discordjs/builders": "^0.5.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
+    "@supabase/supabase-js": "^1.33.3",
     "axios": "^0.21.1",
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",

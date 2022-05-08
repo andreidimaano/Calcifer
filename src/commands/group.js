@@ -87,8 +87,8 @@ let data = new SlashCommandBuilder()
       .setRequired(false)
   );
 
-let intExe = async (interaction, options) => {
-  if (options === undefined) {
+let intExe = async (interaction, options, supabase) => {
+  if (options === undefined || !options) {
     options = parseInteractionOptions(interaction.options._hoistedOptions);
   }
   let { work, rest, error } = options;
@@ -175,11 +175,12 @@ let intExe = async (interaction, options) => {
       let members = [...channel.members.values()];
       let usersToPing = "";
 
+
       members.forEach((member) => {
         if (!member.user.bot) {
           usersToPing = usersToPing.concat(`${member.user.toString()} `);
           let memberTag = member.user.username + member.user.discriminator;
-          updateDatabase(guildId, member.user.id, memberTag, work);
+          updateDatabase(guildId, member.user.id, memberTag, work, supabase);
         }
       });
 
@@ -243,7 +244,7 @@ let intExe = async (interaction, options) => {
   }, work * 60000);
 };
 
-let mesExe = async (options) => {
+let mesExe = async (options, supabase) => {
   let { message } = options;
   let { work, rest, error } = parseMessageOptions(options.work, options.rest);
   let user = message.author;
@@ -279,7 +280,6 @@ let mesExe = async (options) => {
   setTimeout(async () => {
     let canceledGroup = await isCanceledGroup(channelId);
     if (canceledGroup) {
-      console.log("Group was canceled");
       await deleteGroupCanceledPomodoro(channelId);
     } else {
       await deleteGroup(channelId);
@@ -291,7 +291,7 @@ let mesExe = async (options) => {
         if (!member.user.bot) {
           usersToPing = usersToPing.concat(`${member.user.toString()} `);
           let memberTag = member.user.username + member.user.discriminator;
-          updateDatabase(guildId, member.user.id, memberTag, work);
+          updateDatabase(guildId, member.user.id, memberTag, work, supabase);
         }
       });
 
@@ -356,11 +356,12 @@ let mesExe = async (options) => {
   }, work * 60000);
 };
 
-let execute = (interaction, options) => {
+let execute = (interaction, options, supabase) => {
+  console.log(interaction)
   if (interaction !== null) {
-    intExe(interaction, options);
+    intExe(interaction, options, supabase);
   } else {
-    mesExe(options);
+    mesExe(options, supabase);
   }
 };
 

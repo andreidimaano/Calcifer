@@ -22,8 +22,13 @@ let helpEmbed = new MessageEmbed()
     {
       name: "Message from Calcifer's Creator:",
       value:
-        "If this bot has helped you, consider supporting my tuition expenses for my study abroad trip to Yonsei University next February :DD - Don't feel obligated tho, I made this bot for fun :D Zelle: andreiidimaano@gmail.com",
-    }
+        "If this bot has helped you, consider supporting my tuition expenses for my study abroad trip to Yonsei University :DD - Don't feel obligated tho, I made this bot for fun :D Zelle: andreiidimaano@gmail.com",
+    },
+    {
+      name: "UPDATE:",
+      value:
+        "I migrated databases to supabase. My bot should now work for everyone. discord has told me i can no longer use messages for commands, please use slash commands"
+    },
   );
 
 const helpRow = new MessageActionRow().addComponents(

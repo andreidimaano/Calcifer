@@ -1,22 +1,29 @@
 const {
-  createUser,
-  updateUser,
-  userExists,
+  // createUser,
+  // updateUser,
+  // userExists,
 } = require("../database/resolvers/UserResolver");
 
+const {createUser, updateMinutes, userExists} = require("../database");
+
 module.exports = {
-  updateDatabase: async (guildId, discordId, discordTag, minutesStudied) => {
+  updateDatabase: async (guildId, discordId, discordTag, minutesStudied, supabase) => {
     let userData = {
       guildId: guildId,
       discordId: discordId,
       discordTag: discordTag,
     };
 
-    let isUser = await userExists(userData);
+    // console.log('supabase: ', supabase);
+
+    let isUser = await userExists(supabase, guildId, discordId);
     if (!isUser) {
-      createUser(userData, minutesStudied);
+      // console.log('no user')
+      createUser(supabase, userData, minutesStudied);
     } else {
-      updateUser(userData, minutesStudied);
+      // console.log('user')
+      updateMinutes(supabase, guildId, discordId, minutesStudied);
+      // updateUser(userData, minutesStudied);
     }
   },
 };
